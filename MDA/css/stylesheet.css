@@ -1,0 +1,323 @@
+.indexTopper{
+      margin-left:-10px;
+      margin-right:0px;
+      background-image:url(/images/topbanner.png);
+      width:1351px;
+      height:90px;
+      margin-top:0px;
+}
+
+button:hover{
+      box-shadow: 0px 0px 5px #ffffff;
+}
+.profile{
+      float:right;
+      margin-top: -25px;
+      margin-right:10px;
+      background-image:url(/images/profile_button.png);
+      width:99px;
+      height:36px;
+      border:none;
+}
+
+.logout{
+      float:right;
+      margin-top: -25px;
+      margin-right:10px;
+      background-image: url(/images/logout_button.png);
+      width:99px;
+      height:36px;
+      border:none;
+      font-size: 17px;
+      color:white;
+}
+.selectedProfile{
+      float:right;
+      margin-top: -25px;
+      margin-right:10px;
+      background-image: url(/images/editprofile_selected.png);
+      width:99px;
+      height:36px;
+      border:none;
+}
+
+.title{
+      width:500px;
+      height:39px;
+      margin-left:8px;
+      margin-bottom:;
+      margin-top:-10px;
+      font-size: 35px;
+      line-height: -27px;
+      color:white;
+      text-align: left;
+}
+
+.updateButtonSelected{
+      width:99px;
+      height:36px;
+      margin-left: 120px;
+      background-image: url(/images/update_selected.png);
+      border: none;
+      border-radius: 5px;
+      font-size: 20px;
+}
+
+.updateButtonNonselected{
+      width: 99px;
+      height:36px;
+      margin-left:120px;
+      background-image:url(/images/update_nonselected.png);
+      border: none;
+      font-size: 20px;
+      border-radius: 5px;
+}
+
+#loginContainer{
+      background-image: url(/images/login.png);
+      width:505px;
+      height:320px;
+      position: absolute;
+      margin-left: 450px;
+      margin-top: 100px;
+}
+
+#usernameLogin{
+      background-image: url(/images/username.png);
+      width:403px;
+      height:25px;
+      margin-top: 120px;
+      margin-left:20px;
+}
+
+#passwordLogin{
+      background-image: url(/images/password_field.png);
+      width:403px;
+      height:25px;
+      margin-top:20px;
+      margin-left:20px;     
+}
+
+#loginButton{
+      background-image: url(/images/login_button.png);
+      width:99px;
+      height:36px;
+      float:right;
+      margin-top: 30px;
+      margin-right: 200px;
+}
+.contentLeft{
+      width:855px;
+      height:405px;
+      margin-top:60px;
+      margin-left:45px;
+      border-radius:5px;
+      background-image: url(/images/leftcontainer.png);
+}
+
+.uploadDetails{
+      height:220px;
+      width: 720px;
+      float:left;
+      background-color: ;
+}
+
+.contentRight{
+      position: absolute;
+      width:355px;
+      height:405px;
+      margin-top: -400px;
+      margin-right:45px;
+      margin-left: 960px;
+      border-radius:5px;
+      background-image:url(/images/rightcontainer.png);
+      float:right;
+}
+
+#information{
+      width:116px;
+      height:36px;
+      background-image: url(/images/information.png);
+}
+
+#customerSite{
+      width:101px;
+      height:26px;
+      background-image: url(/images/CustomerSite.png);
+      margin-left: 15px;
+}
+
+#currentVersion{
+      background-image:url(/images/currentversion_field.png);
+      width:87px;
+      height:20px;
+      margin-top: -10px;
+      margin-bottom: -10px;
+      margin-left: 120px;
+
+}
+
+#updatedByWho{
+      background-image:url(/images/updatedby_field.png);
+      width:87px;
+      height:20px;
+      margin-top: -20px;
+      margin-bottom: -10px;
+      margin-left: 300px;
+}
+
+#dateUpdated{
+      background-image:url(/images/dateupdated_field.png);
+      width:87px;
+      height:20px;
+      margin-top: -20px;
+      margin-bottom: -10px;
+      margin-left: 480px;
+}
+
+#selectFile{
+      width:74px;
+      height:26px;
+      background-image: url(/images/selectfile_banner.png);
+      margin-left: 15px;
+      margin-top: 15px;
+      margin-bottom: -10px;
+}
+
+#uploadButton{
+      width: 99px;
+      height:36px;
+      float:right;
+      margin-top: 200px;
+      margin-right: 20px;
+      background-image: url(/images/upload_button.png);
+      margin-left: 15px;
+
+}
+
+#editProfileName{
+      background-image: url(/images/Name_field.png);
+      width:312px;
+      height:25px;
+      margin-left: 25px;
+      margin-top: 15px;
+}
+
+#editProfileEmail{
+      background-image: url(/images/email_field.png);
+      width:312px;
+      height:25px;
+      margin-left: 25px;
+      margin-top: 15px;
+
+}
+
+#editProfilePassword{
+      background-image: url(/images/password_field.png);
+      width:112px;
+      height:25px;
+      margin-left: 25px;
+      margin-top: 15px;
+}
+
+#editProfileNewPassword{
+      background-image: url(/images/newpassword_field.png);
+      width:112px;
+      height:25px;
+      margin-left:234px;
+      margin-top: -20px;
+}
+
+#editProfileRetypePassword{
+      background-image: url(/images/retypepassword_field.png);
+      width:140px;
+      height:25px;
+      margin-left: 415px;
+      margin-top: -20px;
+}
+
+#editProfileDepartment{
+      background-image: url(/images/department_field.png);
+      width:112px;
+      height:25px;
+      margin-left: 25px;
+      margin-top: 15px;     
+}
+
+#editProfileCancelButton{
+      float:right; 
+      margin-top:0px; 
+      margin-right:80px;
+      background-image: url(/images/cancel_button.png);
+      width:99px;
+      height:36px;
+}
+
+#editProfileSaveButton{
+      float:right; 
+      margin-top:0px; 
+      margin-right:20px;
+      background-image: url(/images/save_button.png);
+      width:99px;
+      height:36px;
+}
+
+#editProfilePageButton{
+      float:right; 
+      margin-top:90px; 
+      margin-right:20px;
+      background-image: url(/images/editprofile.png);
+      width:119px;
+      height:36px;
+}
+#profileInfo{
+      margin-left: 25px;
+
+}
+
+#uploadedFileDetails{
+      background-image: url(/images/UploadedFileDetails.png);
+      width:146px;
+      height:26px;
+      margin-left: 15px;
+}
+
+#name{
+      background-image: url(/images/name2_field.png);
+      width:112px;
+      height:23px;
+      margin-top: 5px;
+      margin-left: 15px;
+
+}
+
+#date{
+      background-image: url(/images/date_field.png);
+      width:212px;
+      height:23px;
+      margin-bottom: -10px;
+      margin-left: 15px;
+}
+
+#versionNumber{
+      background-image: url(/images/versionnumber_field.png);
+      width:212px;
+      height:23px;
+      margin-bottom: -10px;
+      margin-left: 15px;
+}
+
+#comments{
+      background-image: url(/images/comments_field.png);
+      width:212px;
+      height:23px;
+      margin-bottom: 10px;
+      margin-left: 15px;
+}
+
+#editProfileTitle{
+      background-image:url(/images/editprofile.png);
+      width:116px;
+      height:36px;
+      margin-left: 25px;
+}

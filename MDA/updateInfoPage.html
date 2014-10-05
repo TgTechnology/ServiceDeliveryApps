@@ -1,0 +1,40 @@
+<!--Update Info Page-->
+<html>
+	<head>
+		<title>Update Page</title>
+		<link rel="stylesheet" type="text/css" href="menuStylesheet.css">
+		<script>
+			function logOut() {
+    			alert("You are now logged out.");
+    			window.location='logIn.html';
+			}
+		</script>
+	</head>
+	<body>
+		<div class="indexTopper">
+			<div class="title">Menu Deployment Application</div><p></p>
+				<button type="button" class="profile" id="profile" onclick="location.href='profilePage.html'">My Profile</button>
+				<button type="button" class="logout" id="profile" onclick="location.href='profilePage.html'">Logout</button>
+				<button type="button" class="topButtons" id="button0" onclick="location.href='mainPage.html'">Home</button>
+				<button type="button" class="selectedButton" id="button1">Update</button>
+			</div>
+		<div class="contentLeft"><h1>Update Menu</h1>
+			<p><h2>Select Hotel</h2></p>
+			<select>
+  				<option value="hotel 1">hotel 1</option>
+  				<option value="hotel 2">hotel 2</option>
+  				<option value="hotel 3">hotel 3</option>
+  				<option value="hotel 4">hotel 4</option>
+			</select>
+			<input type="text" id="version" value="Current Version"></input>
+			<input type="text" id="updatedByWho"value="Updated By"></input>
+			<input type="text" id="dateUpdated"value="Date Updated"></input>
+			<p><h2>Select File</h2></p>
+			<button type="button" id="fileSelectButton">Browse</button>
+			<input type="text" name="uploadFile" value="File Name"></input>
+			<button type="button" id="uploadButton">Upload</button>
+		</div>
+		<div class="contentRight"><h1>(Information)</h1>
+		</div>
+	</body>
+</html

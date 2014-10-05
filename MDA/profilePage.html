@@ -1,0 +1,32 @@
+<!--Profile Page-->
+<html>
+	<head>
+		<title>Profile Page</title>
+		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+		<script src="includes/javascript.js"></script>
+		<script>
+			function logOut() {
+    			alert("You are now logged out.");
+    			window.location='logIn.html';
+			}
+		</script>
+	</head>
+	<body style="font-family:Tahoma;" OnLoad="loadName()">
+		<div class="indexTopper">
+			<div class="title"></div><p></p>
+				<button type="button" class="logout" id="profile" onclick="logOut()"></button>
+				<button type="button" class="selectedProfile" id="profile" onclick="location.href='profilePage.html'"></button>
+				<button type="button" class="updateButtonNonselected" id="button0" onclick="location.href='mainPage.html'"></button>
+			</div>
+			<div class="contentLeft">
+				<div id="displayName" style="font-size:35px; font-family:Tahoma; text-transform: uppercase;"></div>
+				<h2 id="profileName">Name</h2>
+				<h3 id="profileInfo">Email</h3>
+				<h3 id="profileInfo">Department</h3>
+				<button type="button" id="editProfilePageButton" onclick="location.href='editProfilePage.html'"></button>
+			</div>
+		<div class="contentRight">
+			<div id="information"></div>
+		</div>
+	</body>
+</html>

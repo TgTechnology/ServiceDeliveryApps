@@ -1,0 +1,56 @@
+<!--Main Index-->
+<html>
+	<head>
+		<title>Main Page</title>
+		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+		<script src="includes/javascript.js"></script>
+		<script>
+			function logOut() {
+    			alert("You are now logged out.");
+    			window.location='logIn.html';
+			}
+		</script>
+	</head>
+	<body>
+		<div class="indexTopper">
+			<div class="title"></div><p></p>
+				<button type="button" class="logout" id="profile" onclick="logOut()"></button>
+				<button type="button" class="profile" id="profile" onclick="location.href='profilePage.html'"></button>
+				<button type="button" class="updateButtonSelected" id="button0"></button>
+			</div>
+		<div class="contentLeft">
+			<p><div id="customerSite"></div></p>
+			<div id="hotelDropDown"></div>
+			<div id="currentVersion"></div>
+			<div id="updatedByWho"></div>
+			<div id="dateUpdated"></div>
+			<select style="margin-left:15px; margin-right:25px; margin-top:20px;">
+  				<option value="hotel 1">hotel 1</option>
+  				<option value="hotel 2">hotel 2</option>
+  				<option value="hotel 3">hotel 3</option>
+  				<option value="hotel 4">hotel 4</option>
+			</select>
+			<input type="text" id="versionInput"></input>
+			<input type="text" id="updatedByWhoInput"></input>
+			<input type="text" id="dateUpdatedInput"></input>
+			<p><div id="selectFile"></div></p>
+			<input type="file" name="browse" style="margin-left:15px;">
+			<button type="button" id="uploadButton"></button><p></p>
+				<div class="uploadDetails">
+					<div id="uploadedFileDetails"></div>
+					<div id="name"></div><p></p>
+						<input id="inputedName" style="width:312px; height:20px; margin-top:-10px; margin-left:15px;"></input><p></p>
+					<div id="date"></div><p></p>
+						<input type="text" id="inputedDate" style=" width:312px; height:20px; margin-top:-10:px; margin-left:15px;"></input><p></p>
+					<div id="versionNumber"></div><p></p>
+						<input type="text" id="inputedVersion" style="width:312px; height:20; margin-left:15px;"></input>
+					<div id="comments" style="float:right; margin-top:-159px; margin-right:92px;"></div><p></p>
+						<textarea id="inputedComments" cols="40" rows="10" style="float:right; margin-top:-167px; margin-right:5px;"></textarea>
+				</div>
+		</div>
+		</div>
+		<div class="contentRight">
+			<div id="information"></div>
+		</div>
+	</body>
+</html>

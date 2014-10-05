@@ -1,0 +1,37 @@
+<!--CurrentPage-->
+<html>
+	<head>
+		<title>Current Page</title>
+		<link rel="stylesheet" type="text/css" href="menuStylesheet.css">
+		<script>
+			function logOut() {
+    			alert("You are now logged out.");
+    			window.location='logIn.html';
+			}
+		</script>
+	</head>
+	<body>
+		<div class="indexTopper">
+			<div class="title">Menu Deployment Application</div><p></p>
+				<button type="button" class="profile" id="profile" onclick="location.href='profilePage.html'">My Profile
+					<button type="button" class="profile" id="profile" onclick="location.href='profilePage.html'">Logout</p></p>
+				<button type="button" class="topButtons" id="button0" >Home</button>
+				<button type="button" class="topButtons" id="button1" onclick="location.href='updateInfoPage.html'">Update</button>
+				<button type="button" class="selectedButton" id="button2">Current</button>
+				<button type="button" class="topButtons" id="button3" onclick="logOut()">Logout</button>
+			</div>
+		<div class="contentLeft"><h1>Select Hotel</h1>
+			<select>
+  				<option value="hotel 1">hotel 1</option>
+  				<option value="hotel 2">hotel 2</option>
+  				<option value="hotel 3">hotel 3</option>
+  				<option value="hotel 4">hotel 4</option>
+			</select>
+			<button type="button" name="go">Go</button>
+			<h2>Current Version of Selected Hotel</h2>
+			<input type="text" name="versionNumber" value="Version">
+		</div>
+		<div class="contentRight"><h1>(Information)</h1>
+		</div>
+	</body>
+</html>

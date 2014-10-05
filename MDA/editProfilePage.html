@@ -1,0 +1,51 @@
+<!--Edit Profile Page-->
+<html>
+	<head>
+		<title> Edit Profile Page</title>
+		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+		<script src="includes/javascript.js"></script>
+		<script>
+			function logOut() {
+    			alert("You are now logged out.");
+    			window.location='logIn.html';
+			}
+			function save() {
+    			var x;
+    			if (confirm("Are you sure you would like to save?") == true) {
+        			window.location='profilePage.html';
+    			} else {
+    			}
+			}
+		</script>
+	</head>
+	<body OnLoad="loadUserProfile()">
+		<div class="indexTopper">
+			<div class="title"></div><p></p>
+				<button type="button" class="logout" id="profile" onclick="logOut()"></button>
+				<button type="button" class="selectedProfile" id="profile" onclick="location.href='profilePage.html'"></button>
+				<button type="button" class="updateButtonNonselected" id="button0" id="button0" onclick="location.href='mainPage.html'"></button>
+			</div>
+			<div class="contentLeft">
+				<div id="editProfileTitle"></div>
+				<div id="editProfileName"></div>
+					<input type="text" id="firstName" value="First Name" style="margin-left:25px; margin-top:10px; width:150px"></input>
+					<input type="text" id="lastName" value="Last Name" style="margin-left:10px; margin-top:10px; width:150px"></input>
+				<div id="editProfileEmail"></div>
+					<input type="text" id="email" style="margin-left:25px; width:200px"></input>
+				<div id="editProfilePassword"></div>
+				<div id="editProfileNewPassword"></div>
+				<div id="editProfileRetypePassword"></div>
+					<input type="password" id="currentPassword" value="" style="margin-left:25px; width:200px"></input>
+					<input type="password" id="newPassword"></input>
+					<input type="password" id="retypePassword"></input>
+				<div id="editProfileDepartment"></div>
+					<input type="text" id="department" style="margin-left:25px; width:200px"></input>
+				<button type="button" id="editProfileCancelButton" onclick="location.href='profilePage.html'"></button>
+				<button type="button" id="editProfileSaveButton" onclick="save()"></button>
+				<button type="button" id"test" onclick="updateUsername()">test</button>
+			</div>
+		<div class="contentRight">
+			<div id="information"></div>
+		</div>
+	</body>
+</html>
