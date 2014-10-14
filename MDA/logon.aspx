@@ -19,14 +19,14 @@
 void Login_Click(object sender, EventArgs e)
 {
 
-    string adPath = "LDAP://10.10.25.32/DC=BR,DC=iptvtg,DC=com"; //Path to your LDAP directory server
+    string adPath = "LDAP://TGMGMTDC04.MGMT.IPTVTG.COM/DC=mgmt,DC=iptvtg,DC=com"; //Path to your LDAP directory server
     //string adPath = "LDAP://TGNDP1MRDC001/DC=BR,DC=iptvtg,DC=com"; //Path to your LDAP directory server
-  LdapAuthentication adAuth = new LdapAuthentication(adPath);
+    LdapAuthentication adAuth = new LdapAuthentication(adPath);
   try
   {
     if(true == adAuth.IsAuthenticated(txtDomain.Text, txtUsername.Text, txtPassword.Text))
     {
-      string groups = adAuth.GetGroups();
+        string groups = "empty"; //adAuth.GetGroups();
 
       //Create the ticket, and add the groups.
       bool isCookiePersistent = chkPersist.Checked;
