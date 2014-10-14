@@ -46,7 +46,6 @@
 						<textarea id="inputedComments" cols="40" rows="10" style="float:right; margin-top:-167px; margin-right:5px;"></textarea>
 				</div>
 		</div>
-		</div>
 		<div class="contentRight">
 			<div id="information"></div>
 		</div>
