@@ -1,19 +1,24 @@
 ﻿<%@ Page language="c#" AutoEventWireup="true" %>
 <%@ Import Namespace="FormsAuth" %>
 <html>
-  <body>
-    <form id="Login" method="post" runat="server">
-      <asp:Label ID="Label1" Runat=server >Domain:</asp:Label>
-      <asp:TextBox ID="txtDomain" Runat=server ></asp:TextBox><br>    
-      <asp:Label ID="Label2" Runat=server >Username:</asp:Label>
-      <asp:TextBox ID=txtUsername Runat=server ></asp:TextBox><br>
-      <asp:Label ID="Label3" Runat=server >Password:</asp:Label>
-      <asp:TextBox ID="txtPassword" Runat=server TextMode=Password></asp:TextBox><br>
-      <asp:Button ID="btnLogin" Runat=server Text="Login" OnClick="Login_Click"></asp:Button><br>
-      <asp:Label ID="errorLabel" Runat=server ForeColor=#ff3300></asp:Label><br>
-      <asp:CheckBox ID=chkPersist Runat=server Text="Persist Cookie" />
-    </form>
-  </body>
+    <head>
+		<title>MDA LogIn</title>
+		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+	</head>
+    <body>
+        <div class="indexTopper" style="margin-top:-10px;"></div>
+        <div id="loginContainer">
+            <form id="Login" method="post" runat="server">
+                <div id="usernameLogin"></div><br />
+                <asp:TextBox ID=txtUsername Runat=server style="margin-left:20px; margin-top:-10px;"></asp:TextBox>
+                <div id="passwordLogin"></div><br />
+                <asp:TextBox ID="txtPassword" Runat=server TextMode=Password style="margin-left:20px; margin-top:-10px;"></asp:TextBox>
+                <asp:Button ID="loginButton" Runat=server OnClick="Login_Click"></asp:Button><br />
+                <asp:Label ID="errorLabel" Runat=server ForeColor=#ff3300></asp:Label><br />
+                <asp:CheckBox ID=chkPersist Runat=server Text="Persist Cookie" />
+            </form>
+        </div>
+    </body>
 </html>
 <script runat=server>
 void Login_Click(object sender, EventArgs e)
@@ -24,7 +29,7 @@ void Login_Click(object sender, EventArgs e)
     LdapAuthentication adAuth = new LdapAuthentication(adPath);
   try
   {
-    if(true == adAuth.IsAuthenticated(txtDomain.Text, txtUsername.Text, txtPassword.Text))
+    if(true == adAuth.IsAuthenticated("mgmt", txtUsername.Text, txtPassword.Text))
     {
         string groups = "empty"; //adAuth.GetGroups();
 
