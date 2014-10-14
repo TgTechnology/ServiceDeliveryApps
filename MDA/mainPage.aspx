@@ -1,21 +1,19 @@
-<!--Main Index-->
+﻿<%@ Page language="c#" AutoEventWireup="true" %>
+<%@ Import Namespace="System.Security.Principal" %>
 <html>
-	<head>
+    	<head>
 		<title>Main Page</title>
 		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
-		<script src="includes/javascript.js"></script>
-		<script>
-			function logOut() {
-    			alert("You are now logged out.");
-    			window.location='logIn.html';
-			}
-		</script>
 	</head>
-	<body>
-		<div class="indexTopper">
+  <body>
+    <form id="Form1" method="post" runat="server">
+      <asp:Label ID="lblName" Runat=server /><br>
+      <asp:Label ID="lblAuthType" Runat=server />
+    </form>
+      <div class="indexTopper">
 			<div class="title"></div><p></p>
 				<button type="button" class="logout" id="profile" onclick="logOut()"></button>
-				<button type="button" class="profile" id="profile" onclick="location.href='profilePage.html'"></button>
+				<button type="button" class="profile" id="Button1" onclick="location.href='profilePage.html'"></button>
 				<button type="button" class="updateButtonSelected" id="button0"></button>
 			</div>
 		<div class="contentLeft">
@@ -52,5 +50,12 @@
 		<div class="contentRight">
 			<div id="information"></div>
 		</div>
-	</body>
+  </body>
 </html>
+<script runat=server>
+void Page_Load(object sender, EventArgs e)
+{
+  lblName.Text = "Hello " + Context.User.Identity.Name + ".";
+  lblAuthType.Text = "You were authenticated using " + Context.User.Identity.AuthenticationType + ".";
+}
+</script>
