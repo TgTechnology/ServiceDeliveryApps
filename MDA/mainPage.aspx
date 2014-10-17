@@ -9,7 +9,6 @@
     <form id="Form1" method="post" runat="server">
       <asp:Label ID="lblName" Runat=server /><br>
       <asp:Label ID="lblAuthType" Runat=server />
-    </form>
       <div class="indexTopper">
 			<div class="title"></div><p></p>
 				<button type="button" class="logout" id="profile" onclick="logOut()"></button>
@@ -22,12 +21,7 @@
 			<div id="currentVersion"></div>
 			<div id="updatedByWho"></div>
 			<div id="dateUpdated"></div>
-			<select style="margin-left:15px; margin-right:25px; margin-top:20px;">
-  				<option value="hotel 1">hotel 1</option>
-  				<option value="hotel 2">hotel 2</option>
-  				<option value="hotel 3">hotel 3</option>
-  				<option value="hotel 4">hotel 4</option>
-			</select>
+            <asp:DropDownList ID="DropDownList1" runat="server" style="margin-left:15px; margin-right:25px; margin-top:20px;"></asp:DropDownList>
 			<input type="text" id="versionInput"></input>
 			<input type="text" id="updatedByWhoInput"></input>
 			<input type="text" id="dateUpdatedInput"></input>
@@ -49,6 +43,7 @@
 		<div class="contentRight">
 			<div id="information"></div>
 		</div>
+        </form>
   </body>
 </html>
 <script runat=server>
