@@ -53,12 +53,11 @@ namespace MDA
             }
         }
 
-        public void GetCustomers()
+        public Array GetCustomers()
         {
             PrincipalManagement.PrincipalManagementInterfaceSoapClient IPrincipalManagement = new PrincipalManagementInterfaceSoapClient();
             Array Hotels = IPrincipalManagement.ReadAllGroups();
-
-
+            return Hotels;
             throw new System.NotImplementedException();
         }
 
