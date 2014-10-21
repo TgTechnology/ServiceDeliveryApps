@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6e37cf07-3ed5-4609-847b-9b46a8f81471" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://10.10.21.10/bss/PrincipalManagement.asmx?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PrincipalManagement.wsdl" MetadataType="Wsdl" ID="2aeff176-3a9d-437f-86d5-7a13966d462f" SourceId="1" SourceUrl="http://10.10.21.10/bss/PrincipalManagement.asmx?wsdl=wsdl1" />
+    <MetadataFile FileName="schema1.xsd" MetadataType="Schema" ID="4d238538-245c-47c0-aacc-6044b944a4aa" SourceId="1" SourceUrl="http://10.10.21.10/bss/PrincipalManagement.asmx?schema=schema1" />
+    <MetadataFile FileName="schema3.xsd" MetadataType="Schema" ID="a5055a50-be8c-4eee-893e-0afbb49ca1c4" SourceId="1" SourceUrl="http://10.10.21.10/bss/PrincipalManagement.asmx?schema=schema3" />
+    <MetadataFile FileName="schema2.xsd" MetadataType="Schema" ID="2fe9227b-4561-4680-9a9c-53ff2029ea2b" SourceId="1" SourceUrl="http://10.10.21.10/bss/PrincipalManagement.asmx?schema=schema2" />
+    <MetadataFile FileName="PrincipalManagement1.wsdl" MetadataType="Wsdl" ID="292c0af0-00ca-478c-a8c3-871aabec90d9" SourceId="1" SourceUrl="http://10.10.21.10/bss/PrincipalManagement.asmx?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
