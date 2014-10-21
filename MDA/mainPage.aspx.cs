@@ -4,23 +4,28 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Windows.Forms;
+
 
 namespace MDA
 {
     public partial class mainPage : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
+        {
+            ddlCustomers_SelectedIndexChanged(ddlCustomers, e);
+        }
+
+        protected void ddlCustomers_SelectedIndexChanged(object sender, EventArgs e)
         {
             Customer Hotels = new Customer();
             Array HotelList = Hotels.GetCustomers();
-            Response.Write(HotelList);
-        }
-        protected void ddl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ddlCustomers.SelectedIndex > 0)
+            int GroupID = 1;
+
+            foreach (PrincipalManagement.Group1 o in HotelList)
             {
-                string goToWebsite = ddlCustomers.SelectedValue;
-                Response.Redirect(goToWebsite);
+                ddlCustomers.Items.Insert(GroupID, new ListItem(o.ExternalID.ToString(), o.ExternalID.ToString()));
+                GroupID = GroupID + 1;
             }
         }
     }
