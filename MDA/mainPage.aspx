@@ -6,12 +6,11 @@
 		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
 	</head>
   <body>
-    <form id="Form1" method="post" runat="server">
-      <asp:Label ID="lblName" Runat=server /><br>
-      <asp:Label ID="lblAuthType" Runat=server />
-    </form>
       <div class="indexTopper">
 			<div class="title"></div><p></p>
+                <form id="Form1" method="post" runat="server">
+                    <asp:Label ID="lblName" Runat=server />
+                </form>
 				<button type="button" class="logout" id="profile" onclick="logOut()"></button>
 				<button type="button" class="profile" id="Button1" onclick="location.href='profilePage.html'"></button>
 				<button type="button" class="updateButtonSelected" id="button0"></button>
@@ -54,7 +53,6 @@
 <script runat=server>
 void Page_Load(object sender, EventArgs e)
 {
-  lblName.Text = "Hello " + Context.User.Identity.Name + ".";
-  lblAuthType.Text = "You were authenticated using " + Context.User.Identity.AuthenticationType + ".";
+  lblName.Text = "Hello, " + Context.User.Identity.Name + ".";
 }
 </script>
