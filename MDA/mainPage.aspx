@@ -7,8 +7,6 @@
 </head>
   <body>
     <form id="Form1" method="post" runat="server">
-      <asp:Label ID="lblName" Runat=server /><br>
-      <asp:Label ID="lblAuthType" Runat=server />
       <div class="indexTopper">
 			<div class="title"></div><p></p>
 				<button type="button" class="logout" id="profile" onclick="logOut()"></button>
@@ -16,6 +14,8 @@
 				<button type="button" class="updateButtonSelected" id="button0"></button>
 			</div>
 		<div class="contentLeft">
+            <asp:Label ID="lblName" Runat=server /><br>
+            <asp:Label ID="lblAuthType" Runat=server />
 			<p><div id="customerSite"></div></p>
 			<div id="hotelDropDown"></div>
 			<div id="currentVersion"></div>
