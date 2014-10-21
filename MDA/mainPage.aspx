@@ -3,7 +3,29 @@
 <html>
     	<head>
 		<title>Main Page</title>
+        <script src="Scripts/jquery-1.2.6.js" type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+            <script type="text/javascript">
+                $().ready(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "http://10.10.21.10/bss/PrincipalManagement.asmx?op=ReadAllGroups",
+                        data: "{}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (msg) {
+                            BindStateddl(msg.d)
+                        }
+                    });
+                })
+                function BindCustomersddl(msg) {
+                    $.each(msg, function () {
+
+                        $("#ddlCustomers").append($("<option></option>").val(this['StateId']).html(this['Name']));
+
+                    });
+                }
+  </script>
 	</head>
   <body>
     <form id="Form1" method="post" runat="server">
@@ -21,7 +43,9 @@
 			<div id="currentVersion"></div>
 			<div id="updatedByWho"></div>
 			<div id="dateUpdated"></div>
-            <asp:DropDownList ID="DropDownList1" runat="server" style="margin-left:15px; margin-right:25px; margin-top:20px;"></asp:DropDownList>
+            <asp:DropDownList ID="ddlCustomers" runat="server" style="margin-left:15px; margin-right:25px; margin-top:20px;" OnSelectedIndexChanged="ddl_SelectedIndexChanged">
+                <asp:ListItem Value="0">Select</asp:ListItem>
+            </asp:DropDownList>
 			<input type="text" id="versionInput"></input>
 			<input type="text" id="updatedByWhoInput"></input>
 			<input type="text" id="dateUpdatedInput"></input>
