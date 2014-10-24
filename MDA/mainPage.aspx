@@ -1,30 +1,32 @@
-﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="mainPage.aspx.cs" Inherits="MDA.mainPage" %>
+﻿<%@ Page language="c#" AutoEventWireup="true" %>
 <%@ Import Namespace="System.Security.Principal" %>
 <html>
-<head>
-    <title>Main Page</title>
-    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
-</head>
+    	<head>
+		<title>Main Page</title>
+		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+	</head>
   <body>
-    <form id="Form1" method="post" runat="server">
       <div class="indexTopper">
 			<div class="title"></div><p></p>
+                <form id="Form1" method="post" runat="server">
+                    <asp:Label ID="lblName" Runat=server />
+                </form>
 				<button type="button" class="logout" id="profile" onclick="logOut()"></button>
 				<button type="button" class="profile" id="Button1" onclick="location.href='profilePage.html'"></button>
 				<button type="button" class="updateButtonSelected" id="button0"></button>
 			</div>
 		<div class="contentLeft">
-			<p><div id="customerSite">
-                <asp:Label ID="lblName" Runat=server />
-                <asp:Label ID="lblAuthType" Runat=server />
-			   </div></p>
+			<p><div id="customerSite"></div></p>
 			<div id="hotelDropDown"></div>
 			<div id="currentVersion"></div>
 			<div id="updatedByWho"></div>
 			<div id="dateUpdated"></div>
-            <asp:DropDownList ID="ddlCustomers" runat="server" AutoPostBack="true" style="margin-left:15px; margin-right:25px; margin-top:20px;">
-                <asp:ListItem Value="0">Select</asp:ListItem>
-            </asp:DropDownList>
+			<select style="margin-left:15px; margin-right:25px; margin-top:20px;">
+  				<option value="hotel 1">hotel 1</option>
+  				<option value="hotel 2">hotel 2</option>
+  				<option value="hotel 3">hotel 3</option>
+  				<option value="hotel 4">hotel 4</option>
+			</select>
 			<input type="text" id="versionInput"></input>
 			<input type="text" id="updatedByWhoInput"></input>
 			<input type="text" id="dateUpdatedInput"></input>
@@ -46,13 +48,11 @@
 		<div class="contentRight">
 			<div id="information"></div>
 		</div>
-        </form>
   </body>
 </html>
 <script runat=server>
 void Page_Load(object sender, EventArgs e)
 {
-  lblName.Text = "Hello " + Context.User.Identity.Name + ".";
-  lblAuthType.Text = "You were authenticated using " + Context.User.Identity.AuthenticationType + ".";
+  lblName.Text = "Hello, " + Context.User.Identity.Name + ".";
 }
 </script>
