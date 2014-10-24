@@ -24,7 +24,7 @@ namespace MDA
 
             foreach (PrincipalManagement.Group1 o in HotelList)
             {
-                ddlCustomers.Items.Insert(GroupID, new ListItem(o.ExternalID.ToString(), o.ExternalID.ToString()));
+                ddlCustomers.Items.Insert(GroupID, new ListItem(o.Type.ToString(), o.ExternalID.ToString()));
                 GroupID = GroupID + 1;
             }
         }

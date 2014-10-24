@@ -21,5 +21,12 @@
       <FileName>Customer.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="MDA.DeploymentInfo">
+    <Position X="6.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAkAAAAAAAAAAAAAAAAAAkAABAAAAA=</HashCode>
+      <FileName>DeploymentInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
