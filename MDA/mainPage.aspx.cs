@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using System.Web.Security;
+using System.Web.SessionState;
+using System.Security.Principal;
 
 
 namespace MDA
@@ -27,6 +30,11 @@ namespace MDA
                 ddlCustomers.Items.Insert(GroupID, new ListItem(o.Type.ToString(), o.ExternalID.ToString()));
                 GroupID = GroupID + 1;
             }
+        }
+        protected void LogOut_Click(Object sender, EventArgs e)
+        {
+            FormsAuthentication.SignOut();
+            Response.Redirect("logon.aspx");
         }
     }
 }

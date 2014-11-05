@@ -9,7 +9,7 @@
     <form id="Form1" method="post" runat="server">
       <div class="indexTopper">
 			<div class="title"></div><p></p>
-				<button type="button" class="logout" id="profile" onclick="logOut()"></button>
+                <asp:Button ID="LogOut" class="logout" OnClick="LogOut_Click" runat="server" AutoPostBack="true" />
 				<button type="button" class="profile" id="Button1" onclick="location.href='profilePage.html'"></button>
 				<button type="button" class="updateButtonSelected" id="button0"></button>
 			</div>
