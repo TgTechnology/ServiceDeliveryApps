@@ -4,11 +4,6 @@
     <head>
 		<title>MDA LogIn</title>
 		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
-        <script type="text/javascript">
-            function invalidLogin() {
-                alert("Authentication did not succeed. Check user name and password.");
-            };
-        </script>
 	</head>
     <body>
         <div class="indexTopper" style="margin-top:-10px;"></div>
@@ -26,7 +21,6 @@
     </body>
 </html>
 <script runat=server>
-
 void Login_Click(object sender, EventArgs e)
 {
 
@@ -61,16 +55,12 @@ void Login_Click(object sender, EventArgs e)
     }
     else
     {
-        
-        errorLabel.Text = "Authentication did not succeed. Check user name and password.";
-  
+      errorLabel.Text = "Authentication did not succeed. Check user name and password.";
     }
   }
   catch(Exception ex)
   {
-    ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "invalidLogin();", true);
+    errorLabel.Text = "Error authenticating. " + ex.Message;
   }
 }
 </script>
-
-      
