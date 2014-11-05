@@ -4,6 +4,7 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.ComponentModel;
 using System.Management;
+using Microsoft.Web.Administration;
 
 namespace MDA
 {
@@ -63,21 +64,13 @@ namespace MDA
             {
             }
         }
-    
-        public void GetSiteInfo()
+
+        public ServerManager GetSiteInfo(string SiteIP)
         {
-            ConnectionOptions connectionOptions = new ConnectionOptions();
+            var manager = ServerManager.OpenRemote(SiteIP);
 
-            connectionOptions.Username = "BR\\Administrator";
-            connectionOptions.Password = "Password1!";
-
-            ManagementScope managementScope = new ManagementScope(@"\\10.10.21.10\root\microsoftiisv2", connectionOptions);
-
-            managementScope.Connect();
-
-            ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(managementScope, query);
-
+            Configuration config = manager.GetApplicationHostConfiguration();
+            return manager;
             throw new System.NotImplementedException();
         }
     }
