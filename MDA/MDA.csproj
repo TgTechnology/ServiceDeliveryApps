@@ -16,8 +16,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -25,9 +25,12 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,6 +42,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Administration.7.0.0.0\lib\net20\Microsoft.Web.Administration.dll</HintPath>
+    </Reference>
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
@@ -62,10 +69,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="cookieTestPage1.html" />
-    <Content Include="cookieTestPage2.html" />
     <Content Include="css\stylesheet.css" />
-    <Content Include="currentPage.html" />
     <Content Include="editProfilePage.html" />
     <Content Include="Global.asax" />
     <Content Include="images\browse_buttons.png" />
@@ -81,6 +85,8 @@
     <Content Include="images\email_field.png" />
     <Content Include="images\hotelname_field.png" />
     <Content Include="images\information.png" />
+    <Content Include="images\InstalledApplications.png" />
+    <Content Include="images\InstalledApps.png" />
     <Content Include="images\LastName_field.png" />
     <Content Include="images\leftcontainer.png" />
     <Content Include="images\login.png" />
@@ -106,13 +112,11 @@
     <Content Include="images\username.png" />
     <Content Include="images\versionnumber_field.png" />
     <Content Include="includes\javascript.js" />
-    <Content Include="logIn.html" />
     <Content Include="mainPage.aspx" />
     <Content Include="profilePage.html" />
+    <Content Include="packages.config" />
     <None Include="script\jquery-1.2.6-vsdoc.js" />
     <Content Include="script\jquery-1.2.6.js" />
-    <Content Include="Service References\PrincipalManagement\configuration91.svcinfo" />
-    <Content Include="Service References\PrincipalManagement\configuration.svcinfo" />
     <Content Include="Service References\PrincipalManagement\MDA.PrincipalManagement.Account.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -185,13 +189,36 @@
     <Content Include="Service References\PrincipalManagement\MDA.PrincipalManagement.VersionStack.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Service References\PrincipalManagement\PrincipalManagement.disco" />
+    <Content Include="Service References\PrincipalManagement\configuration91.svcinfo" />
+    <Content Include="Service References\PrincipalManagement\configuration.svcinfo" />
     <Content Include="Service References\PrincipalManagement\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
+    <Content Include="Service References\RemoteRecord2\MDA.RemoteRecord2.ProgramInfosResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\RemoteRecord2\MDA.RemoteRecord2.RecordingsResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\RemoteRecord2\MDA.RemoteRecord2.SchedulingResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\RemoteRecord2\MDA.RemoteRecord2.StorageInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\RemoteRecord2\RemoteRecord2.disco" />
+    <Content Include="Service References\RemoteRecord2\configuration91.svcinfo" />
+    <Content Include="Service References\RemoteRecord2\configuration.svcinfo" />
+    <Content Include="Service References\RemoteRecord2\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
     <Content Include="TestPage.aspx" />
-    <Content Include="updateInfoPage.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="logon.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +235,7 @@
     <Compile Include="mainPage.aspx.designer.cs">
       <DependentUpon>mainPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="MessageBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="logon.aspx.cs">
       <DependentUpon>logon.aspx</DependentUpon>
@@ -216,6 +244,11 @@
       <DependentUpon>logon.aspx</DependentUpon>
     </Compile>
     <Compile Include="Service References\PrincipalManagement\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\RemoteRecord2\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -244,6 +277,7 @@
     <None Include="Service References\PrincipalManagement\schema3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Service References\RemoteRecord2\RemoteRecord2.wsdl" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -256,8 +290,8 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\PrincipalManagement\" />
+    <WCFMetadataStorage Include="Service References\RemoteRecord2\" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

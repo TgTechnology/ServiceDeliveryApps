@@ -23,8 +23,12 @@ namespace MDA
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
+            Response.Cache.SetNoStore();
 
         }
+
 
         void Application_AuthenticateRequest(object sender, EventArgs e)
         {

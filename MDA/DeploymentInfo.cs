@@ -10,68 +10,24 @@ namespace MDA
 {
     public class DeploymentInfo
     {
-        public int Id
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        public int DeployedBy
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        public int DeployedDate
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        public int DeployedMenu
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        public int DeploymentType
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
         public ServerManager GetSiteInfo(string SiteIP)
         {
             var manager = ServerManager.OpenRemote(SiteIP);
 
             Configuration config = manager.GetApplicationHostConfiguration();
             return manager;
-            throw new System.NotImplementedException();
+        }
+
+        public void DeleteApp(string SiteIP, string sitePath)
+        {
+            ServerManager manager = ServerManager.OpenRemote(SiteIP);
+            Application app = manager.Sites[0].Applications[0];
+            VirtualDirectory virdir = app.VirtualDirectories.CreateElement();
+            virdir.Path = @"/cc";
+            virdir.PhysicalPath = @"C:\inetpub\wwwroot\cc";
+            app.VirtualDirectories.Remove(virdir);
+            manager.CommitChanges();
+
         }
     }
 }

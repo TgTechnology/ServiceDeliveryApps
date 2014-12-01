@@ -4,72 +4,41 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.ComponentModel;
 using MDA.PrincipalManagement;
+using Microsoft.SqlServer.Server;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace MDA
 {
     public class Customer
     {
-        public int Id
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        public string Name
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        public String IpAddress
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        public Array Menus
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
         public Array GetCustomers()
         {
             PrincipalManagement.PrincipalManagementInterfaceSoapClient IPrincipalManagement = new PrincipalManagementInterfaceSoapClient();
             Array Hotels = IPrincipalManagement.ReadAllGroups();
             return Hotels;
-            throw new System.NotImplementedException();
         }
 
 
-        public void GetCustomer()
+        public Object GetCustomer(string SubscriberCode)
         {
-            throw new System.NotImplementedException();
-        }
+            SqlConnection sqlConnection1 = new SqlConnection(@"Data Source=TGNDP1SCOMRS001\OPSMGR;Initial Catalog=MDA;Integrated Security=True");
+            SqlCommand cmd = new SqlCommand();
+            Object returnValue;
 
-        public void UpdateCustomer()
-        {
-            throw new System.NotImplementedException();
+            string sql = "SELECT SubscriberNetwork.MRCCIPPrimary";
+                   sql += " FROM SubscriberGroup INNER JOIN";
+                   sql += " SubscriberNetwork ON SubscriberGroup.SubscriberId = SubscriberNetwork.SubscriberId";
+                   sql += " WHERE  (SubscriberGroup.SubscriberCode = '" + SubscriberCode + "')";
+                   cmd.CommandText = sql;
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = sqlConnection1;
+
+            sqlConnection1.Open();
+            returnValue = cmd.ExecuteScalar();
+            sqlConnection1.Close();
+
+            return returnValue;
         }
     }
 }

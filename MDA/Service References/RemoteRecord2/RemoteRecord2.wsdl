@@ -1,0 +1,946 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.microsoft.com/TV/Dvr/2009/10/RemoteRecord" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.microsoft.com/TV/Dvr/2009/10/RemoteRecord" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.microsoft.com/TV/Dvr/2009/10/RemoteRecord">
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:element name="AddRecordingDefinition">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="recordingDefinition" type="tns:RecordingDefinition" />
+            <s:element minOccurs="1" maxOccurs="1" name="epgOptional" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ExternalId" abstract="true" />
+      <s:complexType name="ProviderExternalId">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ExternalId">
+            <s:attribute name="Name" type="s:string" />
+            <s:attribute name="Id" type="s:string" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="GuidExternalId">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ExternalId">
+            <s:attribute name="Id" type="s1:guid" use="required" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="StringExternalId">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ExternalId">
+            <s:attribute name="Id" type="s:string" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="RecordingDefinition" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="tns:ExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="StationId" type="tns:ExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="Recordings" type="tns:ArrayOfRecording" />
+        </s:sequence>
+        <s:attribute name="Frequency" type="s:int" use="required" />
+        <s:attribute name="HardEndPadSeconds" type="s:int" use="required" />
+        <s:attribute name="HardStartPadSeconds" type="s:int" use="required" />
+        <s:attribute name="KeepUntil" type="s:int" use="required" />
+        <s:attribute name="Priority" type="s:int" use="required" />
+        <s:attribute name="State" type="s:int" use="required" />
+        <s:attribute name="Title" type="s:string" />
+        <s:attribute name="Channel" type="s:int" use="required" />
+        <s:attribute name="UtcStartTime" type="s:dateTime" use="required" />
+      </s:complexType>
+      <s:complexType name="ArrayOfRecording">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Recording" nillable="true" type="tns:Recording" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Recording">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="tns:ExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProgramId" type="tns:ExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="StationId" type="tns:ExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProgramInfo" type="tns:ProgramInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="RecordedInfo" type="tns:RecordedInfo" />
+        </s:sequence>
+        <s:attribute name="Channel" type="s:int" use="required" />
+        <s:attribute name="DurationSeconds" type="s:int" use="required" />
+        <s:attribute name="HardEndPadSeconds" type="s:int" use="required" />
+        <s:attribute name="HardStartPadSeconds" type="s:int" use="required" />
+        <s:attribute name="KeepUntil" type="s:int" use="required" />
+        <s:attribute name="State" type="s:int" use="required" />
+        <s:attribute name="UtcStartTime" type="s:dateTime" use="required" />
+      </s:complexType>
+      <s:complexType name="ProgramInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ProgramId" type="tns:ExternalId" />
+        </s:sequence>
+        <s:attribute name="Title" type="s:string" />
+        <s:attribute name="EpisodeTitle" type="s:string" />
+        <s:attribute name="Description" type="s:string" />
+      </s:complexType>
+      <s:complexType name="RecordedInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OwningDeviceId" type="tns:ExternalId" />
+        </s:sequence>
+        <s:attribute name="SoftStartPadSeconds" type="s:int" use="required" />
+        <s:attribute name="SoftEndPadSeconds" type="s:int" use="required" />
+        <s:attribute name="UtcActualStartTime" type="s:dateTime" use="required" />
+        <s:attribute name="UtcActualEndTime" type="s:dateTime" use="required" />
+        <s:attribute name="StartReason" type="s:int" use="required" />
+        <s:attribute name="StopReason" type="s:int" use="required" />
+        <s:attribute name="KeepUntil" type="s:int" use="required" />
+        <s:attribute name="UtcKeepUntilDate" type="s:dateTime" use="required" />
+      </s:complexType>
+      <s:complexType name="DynamicRD">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:RecordingDefinition">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ProgramId" type="tns:ExternalId" />
+              <s:element minOccurs="0" maxOccurs="1" name="SeriesId" type="tns:ExternalId" />
+            </s:sequence>
+            <s:attribute name="KeepAtMost" type="s:int" use="required" />
+            <s:attribute name="AirtimeDomain" type="s:int" use="required" />
+            <s:attribute name="ChannelDomain" type="s:int" use="required" />
+            <s:attribute name="ShowType" type="s:int" use="required" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ManualRD">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:RecordingDefinition">
+            <s:attribute name="DurationSeconds" type="s:int" use="required" />
+            <s:attribute name="KeepAtMost" type="s:int" use="required" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="AddRecordingDefinitionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddRecordingDefinitionResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SchedulingResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ChangedRecordings" type="tns:ArrayOfRecordingContext" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChangedRDs" type="tns:ArrayOfRecordingDefinition" />
+          <s:element minOccurs="0" maxOccurs="1" name="Conflicts" type="tns:ArrayOfRecordingConflict" />
+          <s:element minOccurs="0" maxOccurs="1" name="FailedTransactions" type="tns:ArrayOfDvrTransactionReport" />
+        </s:sequence>
+        <s:attribute name="ScheduleVersion" type="s:long" use="required" />
+      </s:complexType>
+      <s:complexType name="ArrayOfRecordingContext">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RecordingContext" nillable="true" type="tns:RecordingContext" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RecordingContext">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ParentId" type="tns:ExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="Recording" type="tns:Recording" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRecordingDefinition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RecordingDefinition" nillable="true" type="tns:RecordingDefinition" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRecordingConflict">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RecordingConflict" nillable="true" type="tns:RecordingConflict" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RecordingConflict">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AllRecordingIds" type="tns:ArrayOfExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="ConflictSlices" type="tns:ArrayOfConflictSlice" />
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="tns:ExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="NewRecordingId" type="tns:ExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="Solutions" type="tns:ArrayOfConflictSolution" />
+          <s:element minOccurs="0" maxOccurs="1" name="AlternateAiringInfo" type="tns:ArrayOfAlternateAiringInfo" />
+        </s:sequence>
+        <s:attribute name="RecordingNewSolutionIndex" type="s:int" use="required" />
+        <s:attribute name="StatusQuoSolutionIndex" type="s:int" use="required" />
+      </s:complexType>
+      <s:complexType name="ArrayOfExternalId">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ExternalId" nillable="true" type="tns:ExternalId" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfConflictSlice">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ConflictSlice" nillable="true" type="tns:ConflictSlice" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ConflictSlice">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RecordingIds" type="tns:ArrayOfExternalId" />
+        </s:sequence>
+        <s:attribute name="UtcStartTime" type="s:dateTime" use="required" />
+        <s:attribute name="UtcEndTime" type="s:dateTime" use="required" />
+      </s:complexType>
+      <s:complexType name="ArrayOfConflictSolution">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ConflictSolution" nillable="true" type="tns:ConflictSolution" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ConflictSolution">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="tns:ExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="RecordingIds" type="tns:ArrayOfExternalId" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAlternateAiringInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AlternateAiringInfo" nillable="true" type="tns:AlternateAiringInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AlternateAiringInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RecordingId" type="tns:ExternalId" />
+          <s:element minOccurs="0" maxOccurs="1" name="StationId" type="tns:ExternalId" />
+        </s:sequence>
+        <s:attribute name="UtcStartTime" type="s:dateTime" use="required" />
+      </s:complexType>
+      <s:complexType name="ArrayOfDvrTransactionReport">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DvrTransactionReport" nillable="true" type="tns:DvrTransactionReport" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DvrTransactionReport">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ItemId" type="tns:ExternalId" />
+        </s:sequence>
+        <s:attribute name="ErrMsg" type="s:string" />
+      </s:complexType>
+      <s:element name="GetRecordings">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordingType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pagingInfo" type="tns:DvrPagingInfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="epgInfo" type="tns:EpgInfo" />
+            <s:element minOccurs="1" maxOccurs="1" name="deltasFromVersion" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DvrPagingInfo" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Token" type="s:base64Binary" />
+        </s:sequence>
+        <s:attribute name="DiscardRemaining" type="s:boolean" use="required" />
+        <s:attribute name="MaxRecordingElements" type="s:int" use="required" />
+        <s:attribute name="NextRDRecordingElements" type="s:int" use="required" />
+      </s:complexType>
+      <s:complexType name="DvrPagingInfoBySequence">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DvrPagingInfo" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DvrPagingInfoByTimeInterval">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DvrPagingInfo">
+            <s:attribute name="UtcStartTime" type="s:dateTime" use="required" />
+            <s:attribute name="TimeIntervalHours" type="s:int" use="required" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="EpgInfo">
+        <s:attribute name="UtcStartTime" type="s:dateTime" use="required" />
+        <s:attribute name="DurationHours" type="s:int" use="required" />
+      </s:complexType>
+      <s:element name="GetRecordingsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRecordingsResult" type="tns:RecordingsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RecordingsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PagingInfo" type="tns:DvrPagingInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="RDs" type="tns:ArrayOfRecordingDefinition" />
+          <s:element minOccurs="0" maxOccurs="1" name="Recordings" type="tns:ArrayOfRecordingContext" />
+        </s:sequence>
+        <s:attribute name="ScheduleVersion" type="s:long" use="required" />
+        <s:attribute name="IsDelta" type="s:boolean" use="required" />
+      </s:complexType>
+      <s:element name="GetProgramInfos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="programIds" type="tns:ArrayOfExternalId" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProgramInfosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProgramInfosResult" type="tns:ProgramInfosResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProgramInfosResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FailedTransactions" type="tns:ArrayOfDvrTransactionReport" />
+          <s:element minOccurs="0" maxOccurs="1" name="Infos" type="tns:ArrayOfProgramInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfProgramInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ProgramInfo" nillable="true" type="tns:ProgramInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetStorageInfos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStorageInfosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetStorageInfosResult" type="tns:ArrayOfStorageInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfStorageInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="StorageInfo" nillable="true" type="tns:StorageInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="StorageInfo">
+        <s:attribute name="CapacityInBytes" type="s:unsignedLong" use="required" />
+        <s:attribute name="AvailableBytes" type="s:unsignedLong" use="required" />
+      </s:complexType>
+      <s:element name="UpdateRecordingDefinition">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="changedRD" type="tns:RecordingDefinition" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateRecordingDefinitionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateRecordingDefinitionResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateUpcomingRecording">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="changedRecording" type="tns:Recording" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateUpcomingRecordingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateUpcomingRecordingResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateOneTimeToSeries">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="oneTimeDynamicRDId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="seriesSettings" type="tns:DynamicRD" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateOneTimeToSeriesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateOneTimeToSeriesResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCompletedRecording">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="recordingId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="info" type="tns:RecordedInfo" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCompletedRecordingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateCompletedRecordingResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateRecordingDefinitionPriorities">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="rdIdsInNewOrderHighestToLowest" type="tns:ArrayOfExternalId" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateRecordingDefinitionPrioritiesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateRecordingDefinitionPrioritiesResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveRecordingDefinition">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="recordingDefinitionId" type="tns:ExternalId" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveRecordingDefinitionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RemoveRecordingDefinitionResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveUpcomingRecordings">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="recordingIds" type="tns:ArrayOfExternalId" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveUpcomingRecordingsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RemoveUpcomingRecordingsResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateConflictedRecordingState">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="recordingId" type="tns:ExternalId" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateConflictedRecordingStateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateConflictedRecordingStateResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResolveConflicts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="conflictIds" type="tns:ArrayOfExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="solutionIds" type="tns:ArrayOfExternalId" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResolveConflictsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ResolveConflictsResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResolveConflictCustom">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="conflictId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="scheduledRecordingIds" type="tns:ArrayOfExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="conflictedRecordingIds" type="tns:ArrayOfExternalId" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResolveConflictCustomResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ResolveConflictCustomResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCompletedRecordings">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalAccountId" type="tns:ExternalId" />
+            <s:element minOccurs="0" maxOccurs="1" name="recordingIds" type="tns:ArrayOfExternalId" />
+            <s:element minOccurs="1" maxOccurs="1" name="version" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCompletedRecordingsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RemoveCompletedRecordingsResult" type="tns:SchedulingResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AddRecordingDefinitionSoapIn">
+    <wsdl:part name="parameters" element="tns:AddRecordingDefinition" />
+  </wsdl:message>
+  <wsdl:message name="AddRecordingDefinitionSoapOut">
+    <wsdl:part name="parameters" element="tns:AddRecordingDefinitionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRecordingsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRecordings" />
+  </wsdl:message>
+  <wsdl:message name="GetRecordingsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRecordingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProgramInfosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProgramInfos" />
+  </wsdl:message>
+  <wsdl:message name="GetProgramInfosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProgramInfosResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetStorageInfosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetStorageInfos" />
+  </wsdl:message>
+  <wsdl:message name="GetStorageInfosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetStorageInfosResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateRecordingDefinitionSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateRecordingDefinition" />
+  </wsdl:message>
+  <wsdl:message name="UpdateRecordingDefinitionSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateRecordingDefinitionResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateUpcomingRecordingSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateUpcomingRecording" />
+  </wsdl:message>
+  <wsdl:message name="UpdateUpcomingRecordingSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateUpcomingRecordingResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOneTimeToSeriesSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateOneTimeToSeries" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOneTimeToSeriesSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateOneTimeToSeriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCompletedRecordingSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateCompletedRecording" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCompletedRecordingSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateCompletedRecordingResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateRecordingDefinitionPrioritiesSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateRecordingDefinitionPriorities" />
+  </wsdl:message>
+  <wsdl:message name="UpdateRecordingDefinitionPrioritiesSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateRecordingDefinitionPrioritiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveRecordingDefinitionSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveRecordingDefinition" />
+  </wsdl:message>
+  <wsdl:message name="RemoveRecordingDefinitionSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveRecordingDefinitionResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveUpcomingRecordingsSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveUpcomingRecordings" />
+  </wsdl:message>
+  <wsdl:message name="RemoveUpcomingRecordingsSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveUpcomingRecordingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateConflictedRecordingStateSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateConflictedRecordingState" />
+  </wsdl:message>
+  <wsdl:message name="UpdateConflictedRecordingStateSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateConflictedRecordingStateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ResolveConflictsSoapIn">
+    <wsdl:part name="parameters" element="tns:ResolveConflicts" />
+  </wsdl:message>
+  <wsdl:message name="ResolveConflictsSoapOut">
+    <wsdl:part name="parameters" element="tns:ResolveConflictsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ResolveConflictCustomSoapIn">
+    <wsdl:part name="parameters" element="tns:ResolveConflictCustom" />
+  </wsdl:message>
+  <wsdl:message name="ResolveConflictCustomSoapOut">
+    <wsdl:part name="parameters" element="tns:ResolveConflictCustomResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCompletedRecordingsSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveCompletedRecordings" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCompletedRecordingsSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveCompletedRecordingsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="RemoteRecordScheduler2Soap">
+    <wsdl:operation name="AddRecordingDefinition">
+      <wsdl:input message="tns:AddRecordingDefinitionSoapIn" />
+      <wsdl:output message="tns:AddRecordingDefinitionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRecordings">
+      <wsdl:input message="tns:GetRecordingsSoapIn" />
+      <wsdl:output message="tns:GetRecordingsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProgramInfos">
+      <wsdl:input message="tns:GetProgramInfosSoapIn" />
+      <wsdl:output message="tns:GetProgramInfosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStorageInfos">
+      <wsdl:input message="tns:GetStorageInfosSoapIn" />
+      <wsdl:output message="tns:GetStorageInfosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRecordingDefinition">
+      <wsdl:input message="tns:UpdateRecordingDefinitionSoapIn" />
+      <wsdl:output message="tns:UpdateRecordingDefinitionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUpcomingRecording">
+      <wsdl:input message="tns:UpdateUpcomingRecordingSoapIn" />
+      <wsdl:output message="tns:UpdateUpcomingRecordingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOneTimeToSeries">
+      <wsdl:input message="tns:UpdateOneTimeToSeriesSoapIn" />
+      <wsdl:output message="tns:UpdateOneTimeToSeriesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCompletedRecording">
+      <wsdl:input message="tns:UpdateCompletedRecordingSoapIn" />
+      <wsdl:output message="tns:UpdateCompletedRecordingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRecordingDefinitionPriorities">
+      <wsdl:input message="tns:UpdateRecordingDefinitionPrioritiesSoapIn" />
+      <wsdl:output message="tns:UpdateRecordingDefinitionPrioritiesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveRecordingDefinition">
+      <wsdl:input message="tns:RemoveRecordingDefinitionSoapIn" />
+      <wsdl:output message="tns:RemoveRecordingDefinitionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUpcomingRecordings">
+      <wsdl:input message="tns:RemoveUpcomingRecordingsSoapIn" />
+      <wsdl:output message="tns:RemoveUpcomingRecordingsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateConflictedRecordingState">
+      <wsdl:input message="tns:UpdateConflictedRecordingStateSoapIn" />
+      <wsdl:output message="tns:UpdateConflictedRecordingStateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ResolveConflicts">
+      <wsdl:input message="tns:ResolveConflictsSoapIn" />
+      <wsdl:output message="tns:ResolveConflictsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ResolveConflictCustom">
+      <wsdl:input message="tns:ResolveConflictCustomSoapIn" />
+      <wsdl:output message="tns:ResolveConflictCustomSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCompletedRecordings">
+      <wsdl:input message="tns:RemoveCompletedRecordingsSoapIn" />
+      <wsdl:output message="tns:RemoveCompletedRecordingsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RemoteRecordScheduler2Soap" type="tns:RemoteRecordScheduler2Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddRecordingDefinition">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/AddRecordingDefinition" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRecordings">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/GetRecordings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProgramInfos">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/GetProgramInfos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStorageInfos">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/GetStorageInfos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRecordingDefinition">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateRecordingDefinition" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUpcomingRecording">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateUpcomingRecording" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOneTimeToSeries">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateOneTimeToSeries" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCompletedRecording">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateCompletedRecording" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRecordingDefinitionPriorities">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateRecordingDefinitionPriorities" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveRecordingDefinition">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/RemoveRecordingDefinition" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUpcomingRecordings">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/RemoveUpcomingRecordings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateConflictedRecordingState">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateConflictedRecordingState" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveConflicts">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/ResolveConflicts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveConflictCustom">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/ResolveConflictCustom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCompletedRecordings">
+      <soap:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/RemoveCompletedRecordings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="RemoteRecordScheduler2Soap1" type="tns:RemoteRecordScheduler2Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddRecordingDefinition">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/AddRecordingDefinition" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRecordings">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/GetRecordings" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProgramInfos">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/GetProgramInfos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStorageInfos">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/GetStorageInfos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRecordingDefinition">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateRecordingDefinition" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUpcomingRecording">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateUpcomingRecording" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOneTimeToSeries">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateOneTimeToSeries" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCompletedRecording">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateCompletedRecording" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRecordingDefinitionPriorities">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateRecordingDefinitionPriorities" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveRecordingDefinition">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/RemoveRecordingDefinition" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUpcomingRecordings">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/RemoveUpcomingRecordings" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateConflictedRecordingState">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/UpdateConflictedRecordingState" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveConflicts">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/ResolveConflicts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveConflictCustom">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/ResolveConflictCustom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCompletedRecordings">
+      <soap12:operation soapAction="http://www.microsoft.com/iptv/oss/branch/remoterecord/RemoveCompletedRecordings" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RemoteRecord2">
+    <wsdl:port name="RemoteRecordScheduler2Soap" binding="tns:RemoteRecordScheduler2Soap">
+      <soap:address location="http://10.10.21.12/ossremoterecord/RemoteRecord2.asmx" />
+    </wsdl:port>
+    <wsdl:port name="RemoteRecordScheduler2Soap1" binding="tns:RemoteRecordScheduler2Soap1">
+      <soap12:address location="http://10.10.21.12/ossremoterecord/RemoteRecord2.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

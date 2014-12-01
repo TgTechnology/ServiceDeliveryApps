@@ -9,13 +9,13 @@
         <div class="indexTopper" style="margin-top:-10px;"></div>
         <div id="loginContainer">
             <form id="Login" method="post" runat="server">
+                <asp:Label ID="errorLabel" Runat=server></asp:Label>
                 <div id="usernameLogin"></div><br />
                 <asp:TextBox ID=txtUsername Runat=server style="margin-left:20px; margin-top:-10px;"></asp:TextBox>
                 <div id="passwordLogin"></div><br />
                 <asp:TextBox ID="txtPassword" Runat=server TextMode=Password style="margin-left:20px; margin-top:-10px;"></asp:TextBox>
                 <asp:Button ID="loginButton" Runat=server OnClick="Login_Click"></asp:Button><br />
-                <asp:Label ID="errorLabel" Runat=server ForeColor=#ff3300></asp:Label><br />
-                <asp:CheckBox ID=chkPersist Runat=server Text="Persist Cookie" />
+                <asp:CheckBox ID=chkPersist Runat=server Text="Remember Me" />
             </form>
         </div>
     </body>

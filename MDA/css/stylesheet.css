@@ -1,3 +1,7 @@
+* {
+    font-family: Arial;
+}
+
 .indexTopper{
       margin-left:-10px;
       margin-right:0px;
@@ -12,17 +16,33 @@ button:hover{
 }
 .profile{
       float:right;
-      margin-top: -25px;
+      margin-top: -1px;
       margin-right:10px;
       background-image:url(/images/profile_button.png);
       width:99px;
       height:36px;
       border:none;
 }
+#loginName{
+      float:right;
+      margin-top: -20px;
+      margin-right: 10px;
+      border:none;
+      font-size: 12px;
+      color:white;
+}
+#errorLabel{
+      margin-top: -35px;
+      margin-left: 20px;
+      border:none;
+      font-size: 12px;
+      color:red;
+      position: absolute;
+}
 
 .logout{
       float:right;
-      margin-top: -25px;
+      margin-top: -1px;
       margin-right:10px;
       background-image: url(/images/logout_button.png);
       width:99px;
@@ -90,6 +110,9 @@ button:hover{
       margin-left:20px;
 }
 
+#chkPersist{
+      margin-left:20px;
+}
 #passwordLogin{
       background-image: url(/images/password_field.png);
       width:403px;
@@ -139,40 +162,77 @@ button:hover{
       height:36px;
       background-image: url(/images/information.png);
 }
-
-#customerSite{
+#hotelDropDown{
       width:101px;
       height:26px;
       background-image: url(/images/CustomerSite.png);
+      /*margin-top: -20px;
+      margin-bottom: -10px;
       margin-left: 15px;
+      position: absolute;*/
 }
+/*#ddlCustomers{
+      margin-top: 20px;
+      margin-bottom: -10px;
+      margin-left: 15px;
+      position: relative;
+}*/
+
+#appsDropDown{
+      width:101px;
+      height:26px;
+      background-image: url(/images/InstalledApps.png);
+      /*margin-top: -20px;
+      margin-bottom: -10px;
+      margin-left: 300px;
+      position: absolute;*/
+}
+
+
+/*#ddlApps{
+      margin-top: 20px;
+      margin-bottom: -10px;
+      margin-left: 50px;
+      position: relative;
+}*/
 
 #currentVersion{
       background-image:url(/images/currentversion_field.png);
       width:87px;
       height:20px;
-      margin-top: -10px;
-      margin-bottom: -10px;
-      margin-left: 120px;
+      position: relative;
+      top: 40px;
 
 }
+
+#versionInput{
+      position: relative;
+      top: 40px;
+
+}
+
 
 #updatedByWho{
       background-image:url(/images/updatedby_field.png);
       width:87px;
       height:20px;
-      margin-top: -20px;
-      margin-bottom: -10px;
-      margin-left: 300px;
+      position: relative;
+      top: 80px;
 }
-
+#updatedByWhoInput{
+      position: relative;
+      top: 80px;
+}
 #dateUpdated{
       background-image:url(/images/dateupdated_field.png);
       width:87px;
       height:20px;
-      margin-top: -20px;
-      margin-bottom: -10px;
-      margin-left: 480px;
+      position: relative;
+      top: 120px;
+}
+#dateUpdatedInput{
+      position: relative;
+      top: 120px;
 }
 
 #selectFile{
@@ -180,7 +240,7 @@ button:hover{
       height:26px;
       background-image: url(/images/selectfile_banner.png);
       margin-left: 15px;
-      margin-top: 15px;
+      margin-top: 35px;
       margin-bottom: -10px;
 }
 

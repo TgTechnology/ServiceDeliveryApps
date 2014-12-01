@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Management;
 using Microsoft.Web.Administration;
+using MDA.PrincipalManagement;
 
 
 namespace MDA
@@ -14,24 +15,21 @@ namespace MDA
     {
         protected override void OnLoad(EventArgs e)
         {
-            DeploymentInfo HotelInfo = new DeploymentInfo();
-            ServerManager SiteInfo = HotelInfo.GetSiteInfo("10.200.1.72");
 
-            foreach (var site in SiteInfo.Sites)
+            //PrincipalManagement.DeviceValue[] deviceVal = { new PrincipalManagement.DeviceValue() { Key = "PConBlockUnratedPrograms", Value = "1" }, new PrincipalManagement.DeviceValue() { Key = "PinRetryTimeoutMinutes", Value = "0" } };
+            //PrincipalManagementSoapClient oPrincipalManagement = new PrincipalManagementSoapClient();
+
+            //oPrincipalManagement.UpdateDeviceValuesAndNotify("TANG-100010-22222-01", deviceVal);
+            RemoteRecord2.RemoteRecordScheduler2SoapClient oDVRStorage = new RemoteRecord2.RemoteRecordScheduler2SoapClient();
+            RemoteRecord2.StringExternalId accountID = new RemoteRecord2.StringExternalId();
+            accountID.Id = "TANG-100005-00462";
+
+            Array arrRecordings = oDVRStorage.GetStorageInfos(accountID);
+            foreach (RemoteRecord2.StorageInfo o in arrRecordings)
             {
-                Response.Write("Web-Site : " + site.Name);
-                foreach (Application app in site.Applications)
-                {
-                    if (app.VirtualDirectories.Count > 0)
-                    {
-                        foreach (VirtualDirectory vdir in app.VirtualDirectories)
-                        {
-                            Response.Write("  Virtual Directory: " + vdir.PhysicalPath + "<br>");
-                        }
-                    }
-                }
+                Response.Write(o.AvailableBytes.ToString());
             }
-           
+
         }
        
         protected void Page_Load(object sender, EventArgs e)

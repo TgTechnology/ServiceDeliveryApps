@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="mainPage.aspx.cs" Inherits="MDA.mainPage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="mainPage.aspx.cs" Inherits="MDA.mainPage" EnableViewState="True" %>
 <%@ Import Namespace="System.Security.Principal" %>
 <html>
 <head>
@@ -8,27 +8,50 @@
   <body>
     <form id="Form1" method="post" runat="server">
       <div class="indexTopper">
-			<div class="title"></div><p></p>
+			<div class="title"></div>
+                <asp:Label ID="loginName" Text="" runat="server"></asp:Label>
                 <asp:Button ID="LogOut" class="logout" OnClick="LogOut_Click" runat="server" AutoPostBack="true" />
 				<button type="button" class="profile" id="Button1" onclick="location.href='profilePage.html'"></button>
 				<button type="button" class="updateButtonSelected" id="button0"></button>
 			</div>
 		<div class="contentLeft">
-			<p><div id="customerSite">
+			<div id="customerSite">
                 <asp:Label ID="lblName" Runat=server />
                 <asp:Label ID="lblAuthType" Runat=server />
-			   </div></p>
-			<div id="hotelDropDown"></div>
-			<div id="currentVersion"></div>
-			<div id="updatedByWho"></div>
-			<div id="dateUpdated"></div>
-            <asp:DropDownList ID="ddlCustomers" runat="server" AutoPostBack="true" style="margin-left:15px; margin-right:25px; margin-top:20px;">
-                <asp:ListItem Value="0">Select</asp:ListItem>
-            </asp:DropDownList>
-			<input type="text" id="versionInput"></input>
-			<input type="text" id="updatedByWhoInput"></input>
-			<input type="text" id="dateUpdatedInput"></input>
-			<p><div id="selectFile"></div></p>
+			</div>
+		    
+            <asp:Table Runat=server BorderWidth="0" CellSpacing="5">
+                <asp:TableRow>
+                    <asp:TableCell>
+                       <div id="hotelDropDown"></div>
+                    </asp:TableCell>
+                    <asp:TableCell>
+                        <div id="appsDropDown"></div>
+                    </asp:TableCell>
+                    <asp:TableCell HorizontalAlign="Center">
+                          Action  
+                    </asp:TableCell>
+                </asp:TableRow>
+                <asp:TableRow>
+                    <asp:TableCell>
+                        <asp:DropDownList ID="ddlCustomers" runat="server" AutoPostBack="true" EnableViewState="true" onselectedindexchanged="ddlCustomers_SelectedIndexChanged">
+                        </asp:DropDownList>
+                    </asp:TableCell>
+                    <asp:TableCell>
+                        <asp:DropDownList ID="ddlApps" runat="server" AutoPostBack="true">
+                        </asp:DropDownList>
+                    </asp:TableCell>
+                    <asp:TableCell HorizontalAlign="Center">
+                        <asp:Button ID="delete" OnClick="DeleteSite_Click" runat="server" AutoPostBack="true" Text="Delete" />
+                        &nbsp&nbsp
+                        <asp:Button ID="add" OnClick="AddSite_Click" runat="server" AutoPostBack="true" Text="Add" />
+                        &nbsp&nbsp
+                        <asp:Button ID="edit" OnClick="EditSite_Click" runat="server" AutoPostBack="true" Text="Edit" />
+                    </asp:TableCell>
+                </asp:TableRow>
+            </asp:Table>
+
+            <p><div id="selectFile"></div></p>
 			<input type="file" name="browse" style="margin-left:15px;">
 			<button type="button" id="uploadButton"></button><p></p>
 				<div class="uploadDetails">
@@ -44,15 +67,15 @@
 				</div>
 		</div>
 		<div class="contentRight">
-			<div id="information"></div>
+			<div id="information">
+                <div id="currentVersion"></div>
+                <asp:TextBox id="versionInput" runat="server"></asp:TextBox>
+                <div id="updatedByWho"></div>
+                <asp:TextBox id="updatedByWhoInput" runat="server"></asp:TextBox>
+                <div id="dateUpdated"></div>
+                <asp:TextBox id="dateUpdatedInput" runat="server"></asp:TextBox>
+			</div>
 		</div>
         </form>
   </body>
 </html>
-<script runat=server>
-void Page_Load(object sender, EventArgs e)
-{
-  lblName.Text = "Hello " + Context.User.Identity.Name + ".";
-  lblAuthType.Text = "You were authenticated using " + Context.User.Identity.AuthenticationType + ".";
-}
-</script>
