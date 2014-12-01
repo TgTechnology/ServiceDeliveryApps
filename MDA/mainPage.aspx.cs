@@ -97,17 +97,10 @@ namespace MDA
             DeploymentInfo HotelInfo = new DeploymentInfo();
             ServerManager SiteInfo = HotelInfo.GetSiteInfo(ipAddress.ToString());
 
-            MessageBox.Show("Delete: " + ipAddress.ToString());
-            HotelInfo.DeleteApp(ipAddress.ToString(), "");
-
-            Site site = SiteInfo.Sites[0];
-            Microsoft.Web.Administration.Application application = site.Applications["/CC"];
-            site.Applications.Remove(application);
-            SiteInfo.CommitChanges();
-
+            MessageBox.Show("Delete: " + ddlApps.SelectedValue);
+            HotelInfo.DeleteApp(ipAddress.ToString(), ddlApps.SelectedValue);
+            ddlApps_BuildList(sender, e, ddlCustomers.SelectedValue);
             MessageBox.Show("Delete Complete");
-
-
         }
 
         protected void AddSite_Click(Object sender, EventArgs e)
