@@ -10,7 +10,8 @@ using System.Web.SessionState;
 using System.Security.Principal;
 using Microsoft.Web.Administration;
 using System.Management;
-using Microsoft.Web.Administration;
+using System.IO;
+using System.IO.Compression;
 
 namespace MDA
 {
@@ -34,35 +35,39 @@ namespace MDA
         protected void ddlCustomers_BuildList(object sender, EventArgs e)
         {
             Customer Hotels = new Customer();
-            Array HotelList = Hotels.GetCustomers();
+            Dictionary<string, string> HotelList = Hotels.GetCustomers();
             ddlCustomers.Items.Clear();
-            int GroupID = 1;
 
             ddlCustomers.Items.Add(new ListItem("Select", "0"));
-            foreach (PrincipalManagement.Group1 o in HotelList)
+            foreach (KeyValuePair<string, string> o in HotelList)
             {
-                if (!o.ExternalID.ToString().Contains("Everyone"))
+                Customer CustomerInfo = new Customer();
+                Dictionary<string, string> objCustomer = CustomerInfo.GetCustomer(o.Key.ToString());
+
+                foreach (KeyValuePair<string, string> c in objCustomer)
                 {
-                    string HotelName = GetSubstringByString("(", ")", o.Type.ToString());
-                    ddlCustomers.Items.Insert(GroupID, new ListItem(o.ExternalID.ToString() + "-" + HotelName, o.ExternalID.ToString()));
-                    GroupID = GroupID + 1;
+                    ddlCustomers.Items.Add(new ListItem(o.Key.ToString() + "-" + c.Key.ToString(), o.Key.ToString()));
                 }
             }
         }
 
         protected void ddlApps_BuildList(object sender, EventArgs e, string SubscriberId)
         {
+            ServerManager SiteInfo = null;
             ddlApps.Items.Clear();
             ddlApps.Items.Add(new ListItem("Select", "0"));
             if (!String.IsNullOrEmpty(SubscriberId))
             {
                 DeploymentInfo HotelInfo = new DeploymentInfo();
                 Customer CustomerInfo = new Customer();
-                Object ipAddress = CustomerInfo.GetCustomer(SubscriberId);
-                ServerManager SiteInfo = HotelInfo.GetSiteInfo(ipAddress.ToString());
-                
-                int AppID = 1;
+                Dictionary<string, string> objCustomer = CustomerInfo.GetCustomer(SubscriberId);
 
+                foreach (KeyValuePair<string, string> o in objCustomer)
+                {
+                    SiteInfo = HotelInfo.GetSiteInfo(o.Value);
+                }
+
+                int AppID = 1;
                 foreach (var site in SiteInfo.Sites)
                 {
                     foreach (Microsoft.Web.Administration.Application app in site.Applications)
@@ -105,16 +110,28 @@ namespace MDA
 
         protected void AddSite_Click(Object sender, EventArgs e)
         {
-            Customer CustomerInfo = new Customer();
-            Object ipAddress = CustomerInfo.GetCustomer(ddlCustomers.SelectedValue);
+            //Enable add fields
+            browse.Enabled = true;
+            uploadButton.Enabled = true;
+            inputedName.Enabled = true;
+            inputedDate.Enabled = true;
+            inputedVersion.Enabled = true;
+            inputedComments.Enabled = true;
+            add.Visible = false;
+            cancel.Visible = true;
+        }
 
-            DeploymentInfo HotelInfo = new DeploymentInfo();
-            ServerManager SiteInfo = HotelInfo.GetSiteInfo(ipAddress.ToString());
-
-            Site site = SiteInfo.Sites[0];
-            Microsoft.Web.Administration.Application application = site.Applications["/CC"];
-            site.Applications.Remove(application);
-            SiteInfo.CommitChanges();
+        protected void CancelSite_Click(Object sender, EventArgs e)
+        {
+            //Enable add fields
+            browse.Enabled = false;
+            uploadButton.Enabled = false;
+            inputedName.Enabled = false;
+            inputedDate.Enabled = false;
+            inputedVersion.Enabled = false;
+            inputedComments.Enabled = false;
+            add.Visible = true;
+            cancel.Visible = false;
         }
 
         protected void EditSite_Click(Object sender, EventArgs e)
@@ -131,9 +148,77 @@ namespace MDA
             SiteInfo.CommitChanges();
         }
 
-        public string GetSubstringByString(string a, string b, string c)
+        protected void uploadButton_Click(object sender, EventArgs e)
         {
-            return c.Substring((c.IndexOf(a) + a.Length), (c.IndexOf(b) - c.IndexOf(a) - a.Length));
+            if (browse.HasFile)
+            {
+                try
+                {
+                    MessageBox.Show("Uploading.....");
+                    MessageBox.Show(ddlCustomers.SelectedItem.Value.ToString());
+                    string filename = Path.GetFileName(browse.FileName);
+                    browse.SaveAs(Server.MapPath("~/") + filename);
+                    StatusLabel.Text = "Upload status: File uploaded!";
+
+                    Customer CustomerInfo = new Customer();
+                    Dictionary<string, string> objCustomer = CustomerInfo.GetCustomer(ddlCustomers.SelectedItem.Value.ToString());
+
+                    foreach (KeyValuePair<string, string> c in objCustomer)
+                    {
+                        // Copy from the current directory, include subdirectories.
+                        File.Copy(@"C:\MRDOT\Custom Applications\MDA\" + filename, @"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\" + filename);
+
+                        string zipPath = @"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\" + filename;
+                        string extractPath = @"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\";
+
+                        System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    StatusLabel.Text = "The following error occured: " + ex.Message;
+                }
+            }
         }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            // If the destination directory doesn't exist, create it. 
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location. 
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
+        }
+
+        
     }
 }

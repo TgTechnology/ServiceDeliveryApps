@@ -17,14 +17,14 @@
   <Class Name="MDA.Customer">
     <Position X="4.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAARAAAAAAAACAAAQAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAASAAAAABAAA=</HashCode>
       <FileName>Customer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MDA.DeploymentInfo">
     <Position X="6.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAkAAAAAAAAAAAAAAAAAAkAABAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DeploymentInfo.cs</FileName>
     </TypeIdentifier>
   </Class>

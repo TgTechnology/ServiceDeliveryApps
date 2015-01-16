@@ -21,8 +21,7 @@
     </body>
 </html>
 <script runat=server>
-void Login_Click(object sender, EventArgs e)
-{
+void Login_Click(object sender, EventArgs e){
 
     string adPath = "LDAP://TGMGMTDC04.MGMT.IPTVTG.COM/DC=mgmt,DC=iptvtg,DC=com"; //Path to your LDAP directory server
     //string adPath = "LDAP://TGNDP1MRDC001/DC=BR,DC=iptvtg,DC=com"; //Path to your LDAP directory server

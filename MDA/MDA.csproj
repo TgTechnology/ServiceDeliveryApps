@@ -25,7 +25,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,12 +33,13 @@
     <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -47,6 +48,8 @@
       <HintPath>..\packages\Microsoft.Web.Administration.7.0.0.0\lib\net20\Microsoft.Web.Administration.dll</HintPath>
     </Reference>
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -70,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\stylesheet.css" />
+    <Content Include="Default.aspx" />
     <Content Include="editProfilePage.html" />
     <Content Include="Global.asax" />
     <Content Include="images\browse_buttons.png" />
@@ -116,6 +120,8 @@
     <Content Include="profilePage.html" />
     <Content Include="packages.config" />
     <None Include="script\jquery-1.2.6-vsdoc.js" />
+    <Content Include="progressBar.GIF" />
+    <Content Include="Readme.txt" />
     <Content Include="script\jquery-1.2.6.js" />
     <Content Include="Service References\PrincipalManagement\MDA.PrincipalManagement.Account.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -189,13 +195,13 @@
     <Content Include="Service References\PrincipalManagement\MDA.PrincipalManagement.VersionStack.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\PrincipalManagement\PrincipalManagement.disco" />
-    <Content Include="Service References\PrincipalManagement\configuration91.svcinfo" />
-    <Content Include="Service References\PrincipalManagement\configuration.svcinfo" />
-    <Content Include="Service References\PrincipalManagement\Reference.svcmap">
+    <None Include="Service References\PrincipalManagement\PrincipalManagement.disco" />
+    <None Include="Service References\PrincipalManagement\configuration91.svcinfo" />
+    <None Include="Service References\PrincipalManagement\configuration.svcinfo" />
+    <None Include="Service References\PrincipalManagement\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Service References\RemoteRecord2\MDA.RemoteRecord2.ProgramInfosResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -208,14 +214,15 @@
     <Content Include="Service References\RemoteRecord2\MDA.RemoteRecord2.StorageInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\RemoteRecord2\RemoteRecord2.disco" />
-    <Content Include="Service References\RemoteRecord2\configuration91.svcinfo" />
-    <Content Include="Service References\RemoteRecord2\configuration.svcinfo" />
-    <Content Include="Service References\RemoteRecord2\Reference.svcmap">
+    <None Include="Service References\RemoteRecord2\RemoteRecord2.disco" />
+    <None Include="Service References\RemoteRecord2\configuration91.svcinfo" />
+    <None Include="Service References\RemoteRecord2\configuration.svcinfo" />
+    <None Include="Service References\RemoteRecord2\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="TestPage.aspx" />
+    <Content Include="Uploader.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -223,6 +230,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Customer.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DeploymentInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -260,14 +274,22 @@
     <Compile Include="TestPage.aspx.designer.cs">
       <DependentUpon>TestPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Uploader.ascx.cs">
+      <DependentUpon>Uploader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Uploader.ascx.designer.cs">
+      <DependentUpon>Uploader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MDA.cd" />
     <None Include="Properties\PublishProfiles\TNGMDA001.pubxml">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Service References\PrincipalManagement\PrincipalManagement.wsdl" />
-    <Content Include="Service References\PrincipalManagement\PrincipalManagement1.wsdl" />
+    <None Include="Service References\PrincipalManagement\PrincipalManagement.wsdl" />
+    <None Include="Service References\PrincipalManagement\PrincipalManagement1.wsdl" />
     <None Include="Service References\PrincipalManagement\schema1.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -277,7 +299,8 @@
     <None Include="Service References\PrincipalManagement\schema3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Service References\RemoteRecord2\RemoteRecord2.wsdl" />
+    <None Include="Service References\RemoteRecord2\RemoteRecord2.wsdl" />
+    <Content Include="ToUpload\Aggriment.doc" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -21,11 +21,9 @@ namespace MDA
         public void DeleteApp(string SiteIP, string sitePath)
         {
             ServerManager manager = ServerManager.OpenRemote(SiteIP);
-            Application app = manager.Sites[0].Applications[0];
-            VirtualDirectory virdir = app.VirtualDirectories.CreateElement();
-            virdir.Path = @"/cc";
-            virdir.PhysicalPath = @"C:\inetpub\wwwroot\cc";
-            app.VirtualDirectories.Remove(virdir);
+            Site site = manager.Sites[0];
+            Microsoft.Web.Administration.Application application = site.Applications["/" + sitePath];
+            site.Applications.Remove(application);
             manager.CommitChanges();
 
         }

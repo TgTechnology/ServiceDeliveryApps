@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.ComponentModel;
+using System.Collections.Generic;
 using MDA.PrincipalManagement;
 using Microsoft.SqlServer.Server;
 using System.Data;
@@ -12,33 +13,99 @@ namespace MDA
 {
     public class Customer
     {
-        public Array GetCustomers()
+        public string Name
+        {
+            get
+            {
+                return this.Name;
+            }
+            set
+            {
+                this.Name = value;
+            }
+        }
+
+        public string Type
+        {
+            get
+            {
+                return this.Type;
+            }
+            set
+            {
+                this.Type = value;
+            }
+        }
+
+        public string ExternalId
+        {
+            get
+            {
+                return this.ExternalId;
+            }
+            set
+            {
+                this.ExternalId = value;
+            }
+        }
+
+        public string IpAddress
+        {
+            get
+            {
+                return this.IpAddress;
+            }
+            set
+            {
+                this.IpAddress = value;
+            }
+        }
+
+        public Dictionary<string, string> GetCustomers()
         {
             PrincipalManagement.PrincipalManagementInterfaceSoapClient IPrincipalManagement = new PrincipalManagementInterfaceSoapClient();
             Array Hotels = IPrincipalManagement.ReadAllGroups();
-            return Hotels;
+
+            Dictionary<string, string> SubscriberGroups = new Dictionary<string, string>();
+
+            
+            foreach (PrincipalManagement.Group1 h in Hotels)
+            {
+                if (h.Type.ToString().Contains("Site"))
+                {
+                        SubscriberGroups.Add(h.ExternalID.ToString(), h.Type.ToString());
+                }
+            }
+            return SubscriberGroups;
         }
 
-
-        public Object GetCustomer(string SubscriberCode)
+        public Dictionary<string, string> GetCustomer(string SubscriberCode)
         {
             SqlConnection sqlConnection1 = new SqlConnection(@"Data Source=TGNDP1SCOMRS001\OPSMGR;Initial Catalog=MDA;Integrated Security=True");
             SqlCommand cmd = new SqlCommand();
-            Object returnValue;
+            SqlDataReader rdr = null;
 
-            string sql = "SELECT SubscriberNetwork.MRCCIPPrimary";
-                   sql += " FROM SubscriberGroup INNER JOIN";
-                   sql += " SubscriberNetwork ON SubscriberGroup.SubscriberId = SubscriberNetwork.SubscriberId";
-                   sql += " WHERE  (SubscriberGroup.SubscriberCode = '" + SubscriberCode + "')";
-                   cmd.CommandText = sql;
+            Dictionary<string, string> CustomerInfo = new Dictionary<string, string>();
+
+            string sql = "SELECT *";
+            sql += " FROM SubscriberGroup INNER JOIN";
+            sql += " SubscriberNetwork ON SubscriberGroup.SubscriberId = SubscriberNetwork.SubscriberId";
+            sql += " WHERE  (SubscriberGroup.SubscriberCode = '" + SubscriberCode + "')";
+            cmd.CommandText = sql;
             cmd.CommandType = CommandType.Text;
             cmd.Connection = sqlConnection1;
 
             sqlConnection1.Open();
-            returnValue = cmd.ExecuteScalar();
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                CustomerInfo.Add(rdr["Name"].ToString(), rdr["MRCCIPPrimary"].ToString());
+            }
+
             sqlConnection1.Close();
 
-            return returnValue;
+            return CustomerInfo;
         }
     }
 }
