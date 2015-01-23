@@ -120,8 +120,6 @@
     <Content Include="profilePage.html" />
     <Content Include="packages.config" />
     <None Include="script\jquery-1.2.6-vsdoc.js" />
-    <Content Include="progressBar.GIF" />
-    <Content Include="Readme.txt" />
     <Content Include="script\jquery-1.2.6.js" />
     <Content Include="Service References\PrincipalManagement\MDA.PrincipalManagement.Account.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -222,7 +220,6 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="TestPage.aspx" />
-    <Content Include="Uploader.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -274,13 +271,6 @@
     <Compile Include="TestPage.aspx.designer.cs">
       <DependentUpon>TestPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Uploader.ascx.cs">
-      <DependentUpon>Uploader.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Uploader.ascx.designer.cs">
-      <DependentUpon>Uploader.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -300,7 +290,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\RemoteRecord2\RemoteRecord2.wsdl" />
-    <Content Include="ToUpload\Aggriment.doc" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

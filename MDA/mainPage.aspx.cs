@@ -12,6 +12,7 @@ using Microsoft.Web.Administration;
 using System.Management;
 using System.IO;
 using System.IO.Compression;
+using System.Data.SqlClient;
 
 namespace MDA
 {
@@ -154,11 +155,12 @@ namespace MDA
             {
                 try
                 {
-                    MessageBox.Show("Uploading.....");
-                    MessageBox.Show(ddlCustomers.SelectedItem.Value.ToString());
+                    string subscribergroup = ddlCustomers.SelectedItem.Value.ToString().Replace("CDP-", "");
+                    MessageBox.Show("Uploading....." + subscribergroup);
+                    
                     string filename = Path.GetFileName(browse.FileName);
                     browse.SaveAs(Server.MapPath("~/") + filename);
-                    StatusLabel.Text = "Upload status: File uploaded!";
+
 
                     Customer CustomerInfo = new Customer();
                     Dictionary<string, string> objCustomer = CustomerInfo.GetCustomer(ddlCustomers.SelectedItem.Value.ToString());
@@ -167,11 +169,22 @@ namespace MDA
                     {
                         // Copy from the current directory, include subdirectories.
                         File.Copy(@"C:\MRDOT\Custom Applications\MDA\" + filename, @"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\" + filename);
+                        File.Delete(@"C:\MRDOT\Custom Applications\MDA\" + filename);
 
                         string zipPath = @"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\" + filename;
-                        string extractPath = @"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\";
+                        string extractPath = @"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\RDPSites\\";
 
+                        // Expand and then delete
                         System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractPath);
+                        File.Delete(@"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\" + filename);
+
+                        //add application
+                        DeploymentInfo HotelInfo = new DeploymentInfo();
+                        HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\MainMenu", @"/RDPSites/" + subscribergroup + @"/APPS/MAINMENU");
+                        HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\Checkout", @"/RDPSites/" + subscribergroup + @"/APPS/CHECKOUT");
+                        HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\Event", @"/RDPSites/" + subscribergroup + @"/APPS/EVENT");
+                        HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\TGFlight", @"/RDPSites/" + subscribergroup + @"/APPS/TGFlight");
+                        StatusLabel.Text = "Upload status: File uploaded!";
                     }
                 }
                 catch (Exception ex)
@@ -180,45 +193,6 @@ namespace MDA
                 }
             }
         }
-
-        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
-        {
-            // Get the subdirectories for the specified directory.
-            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-            DirectoryInfo[] dirs = dir.GetDirectories();
-
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException(
-                    "Source directory does not exist or could not be found: "
-                    + sourceDirName);
-            }
-
-            // If the destination directory doesn't exist, create it. 
-            if (!Directory.Exists(destDirName))
-            {
-                Directory.CreateDirectory(destDirName);
-            }
-
-            // Get the files in the directory and copy them to the new location.
-            FileInfo[] files = dir.GetFiles();
-            foreach (FileInfo file in files)
-            {
-                string temppath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(temppath, false);
-            }
-
-            // If copying subdirectories, copy them and their contents to new location. 
-            if (copySubDirs)
-            {
-                foreach (DirectoryInfo subdir in dirs)
-                {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
-                }
-            }
-        }
-
-        
+   
     }
 }
