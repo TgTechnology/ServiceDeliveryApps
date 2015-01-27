@@ -101,7 +101,9 @@
     <Content Include="images\newpassword_field.png" />
     <Content Include="images\nofilechosen.png" />
     <Content Include="images\password_field.png" />
+    <Content Include="images\PCR_field.png" />
     <Content Include="images\profile_button.png" />
+    <Content Include="images\RedirectSubnetIP.png" />
     <Content Include="images\retypepassword_field.png" />
     <Content Include="images\rightcontainer.png" />
     <Content Include="images\save_button.png" />

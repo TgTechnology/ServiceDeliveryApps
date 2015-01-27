@@ -18,17 +18,22 @@
 			<div id="customerSite">
                 <asp:Label ID="lblName" Runat=server />
                 <asp:Label ID="lblAuthType" Runat=server />
+                <div id="pcr"></div>
+                <asp:TextBox runat="server" id="pcrinput" Enabled="false" />
 			</div>
-            <asp:Table ID="Table1" Runat=server BorderWidth="0" CellSpacing="2">
+            <asp:Table ID="Table1" Runat=server BorderWidth="0" CellSpacing="5">
                 <asp:TableRow>
                     <asp:TableCell>
                        <div id="hotelDropDown"></div>
                     </asp:TableCell>
                     <asp:TableCell>
-                        <div id="appsDropDown"></div>
+                        <!--div id="appsDropDown"></!--div-->
                     </asp:TableCell>
                     <asp:TableCell HorizontalAlign="Center">
                           Action  
+                    </asp:TableCell>
+                    <asp:TableCell HorizontalAlign="Center">
+                          <div id="subnet"></div>  
                     </asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow>
@@ -37,8 +42,8 @@
                         </asp:DropDownList>
                     </asp:TableCell>
                     <asp:TableCell>
-                        <asp:DropDownList ID="ddlApps" runat="server" AutoPostBack="true">
-                        </asp:DropDownList>
+                        &nbsp;<!--<asp:DropDownList ID="ddlApps" runat="server" AutoPostBack="true">
+                        </asp:DropDownList>-->
                     </asp:TableCell>
                     <asp:TableCell HorizontalAlign="Center">
                         <asp:Button ID="delete" OnClick="DeleteSite_Click" runat="server" Text="Delete" />
@@ -48,12 +53,18 @@
                         &nbsp&nbsp
                         <asp:Button ID="edit" OnClick="EditSite_Click" runat="server" Text="Edit" />
                     </asp:TableCell>
+                    <asp:TableCell HorizontalAlign="Center">
+                        <asp:TextBox runat="server" id="subnetinput" Enabled="false" />
+                    </asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow>
                     <asp:TableCell>
                         <asp:Label ID="StatusLabel" runat="server" text="Upload Status: " Font-Name="Arial" Font-Size="10"></asp:Label>
                     </asp:TableCell>
                     <asp:TableCell>
+                        &nbsp;
+                    </asp:TableCell>
+                    <asp:TableCell HorizontalAlign="Center">
                         &nbsp;
                     </asp:TableCell>
                     <asp:TableCell HorizontalAlign="Center">

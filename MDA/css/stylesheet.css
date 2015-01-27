@@ -171,6 +171,27 @@ button:hover{
       margin-left: 15px;
       position: absolute;*/
 }
+#pcr{
+      width:198px;
+      height:25px;
+      background-image: url(/images/PCR_field.png);
+      position: absolute;
+      top: 100px;
+      left:60px;
+}
+#subnet{
+      width:198px;
+      height:26px;
+      background-image: url(/images/RedirectSubnetIP.png);
+      top: 250px;
+}
+#pcrinput{
+      position: absolute;
+      top: 120px;
+      width:150px;
+      height:20px;
+      left:60px;
+}
 /*#ddlCustomers{
       margin-top: 20px;
       margin-bottom: -10px;
@@ -182,10 +203,6 @@ button:hover{
       width:101px;
       height:26px;
       background-image: url(/images/InstalledApps.png);
-      /*margin-top: -20px;
-      margin-bottom: -10px;
-      margin-left: 300px;
-      position: absolute;*/
 }
 
 
@@ -200,15 +217,16 @@ button:hover{
       background-image:url(/images/currentversion_field.png);
       width:87px;
       height:20px;
-      position: relative;
+      position: absolute;
       top: 40px;
+      left: 20px;
 
 }
 
 #versionInput{
-      position: relative;
-      top: 40px;
-
+      position: absolute;
+      top: 70px;
+      left: 20px;
 }
 
 
@@ -216,23 +234,27 @@ button:hover{
       background-image:url(/images/updatedby_field.png);
       width:87px;
       height:20px;
-      position: relative;
-      top: 80px;
+      position: absolute;
+      top: 100px;
+      left: 20px;
 }
 #updatedByWhoInput{
-      position: relative;
-      top: 80px;
+      position: absolute;
+      top: 130px;
+      left: 20px;
 }
 #dateUpdated{
       background-image:url(/images/dateupdated_field.png);
       width:87px;
       height:20px;
-      position: relative;
-      top: 120px;
+      position: absolute;
+      top: 160px;
+      left: 20px;
 }
 #dateUpdatedInput{
-      position: relative;
-      top: 120px;
+      position: absolute;
+      top: 190px;
+      left: 20px;
 }
 
 #selectFile{

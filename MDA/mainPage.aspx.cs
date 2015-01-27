@@ -12,6 +12,8 @@ using Microsoft.Web.Administration;
 using System.Management;
 using System.IO;
 using System.IO.Compression;
+using Microsoft.SqlServer.Server;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace MDA
@@ -23,14 +25,14 @@ namespace MDA
             if (ddlCustomers.Items.Count == 0)
             {
                 ddlCustomers_BuildList(ddlCustomers, e);
-                ddlApps.Items.Add(new ListItem("Select", "0"));
+                //ddlApps.Items.Add(new ListItem("Select", "0"));
             }
             loginName.Text = "Welcome " + Context.User.Identity.Name + ".";
         }
 
         protected void ddlCustomers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ddlApps_BuildList(ddlApps, e, ddlCustomers.SelectedValue);
+            //ddlApps_BuildList(ddlApps, e, ddlCustomers.SelectedValue);
         }
 
         protected void ddlCustomers_BuildList(object sender, EventArgs e)
@@ -118,6 +120,8 @@ namespace MDA
             inputedDate.Enabled = true;
             inputedVersion.Enabled = true;
             inputedComments.Enabled = true;
+            subnetinput.Enabled = true;
+            pcrinput.Enabled = true;
             add.Visible = false;
             cancel.Visible = true;
         }
@@ -131,6 +135,8 @@ namespace MDA
             inputedDate.Enabled = false;
             inputedVersion.Enabled = false;
             inputedComments.Enabled = false;
+            subnetinput.Enabled = false;
+            pcrinput.Enabled = false;
             add.Visible = true;
             cancel.Visible = false;
         }
@@ -156,7 +162,7 @@ namespace MDA
                 try
                 {
                     string subscribergroup = ddlCustomers.SelectedItem.Value.ToString().Replace("CDP-", "");
-                    MessageBox.Show("Uploading....." + subscribergroup);
+                    //MessageBox.Show("Uploading....." + subscribergroup);
                     
                     string filename = Path.GetFileName(browse.FileName);
                     browse.SaveAs(Server.MapPath("~/") + filename);
@@ -184,7 +190,32 @@ namespace MDA
                         HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\Checkout", @"/RDPSites/" + subscribergroup + @"/APPS/CHECKOUT");
                         HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\Event", @"/RDPSites/" + subscribergroup + @"/APPS/EVENT");
                         HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\TGFlight", @"/RDPSites/" + subscribergroup + @"/APPS/TGFlight");
+
+                        using(SqlConnection openCon=new SqlConnection(@"Data Source=TGNDP1SCOMRS001\OPSMGR;Initial Catalog=MDA;Integrated Security=True"))
+                        {
+                            string saveStaff = "INSERT into TransactionLog (FileTransferred,Version,UploadDateTime,Username,PCRNumber) VALUES (@FileTransferred,@Version,@UploadDateTime,@Username,@PCRNumber)";
+
+                          using(SqlCommand querySaveLog = new SqlCommand(saveStaff))
+                           {
+                                querySaveLog.Connection = openCon;
+                                querySaveLog.Parameters.Add("@FileTransferred", SqlDbType.VarChar, 30).Value = filename;
+                                string file = System.IO.Path.GetFileNameWithoutExtension(filename);
+                                querySaveLog.Parameters.Add("@Version", SqlDbType.VarChar, 30).Value = file;
+                                querySaveLog.Parameters.Add("@UploadDateTime", SqlDbType.DateTime, 30).Value = DateTime.Now;
+                                querySaveLog.Parameters.Add("@Username", SqlDbType.VarChar, 30).Value = Context.User.Identity.Name;
+                                querySaveLog.Parameters.Add("@PCRNumber", SqlDbType.VarChar, 30).Value = pcrinput.Text;
+
+
+                                openCon.Open();
+                                querySaveLog.ExecuteNonQuery();
+                                openCon.Close();
+                           }
+                         }
+
+
                         StatusLabel.Text = "Upload status: File uploaded!";
+
+
                     }
                 }
                 catch (Exception ex)

@@ -31,7 +31,6 @@ namespace MDA
         public void AddApp(string SiteIP, string sitePath, string appPath)
         {
             ServerManager manager = ServerManager.OpenRemote(SiteIP);
-            //manager.Sites["Default Web Site"].Applications.Add(@"/RDPSites/200003/APPS/MAINMENU", sitePath);
             manager.Sites["Default Web Site"].Applications.Add(appPath, sitePath);
             manager.CommitChanges();
         }
