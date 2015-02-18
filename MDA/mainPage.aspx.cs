@@ -25,14 +25,112 @@ namespace MDA
             if (ddlCustomers.Items.Count == 0)
             {
                 ddlCustomers_BuildList(ddlCustomers, e);
-                //ddlApps.Items.Add(new ListItem("Select", "0"));
+                ddlRedirects.Items.Add(new ListItem("Select", "Selected"));
             }
             loginName.Text = "Welcome " + Context.User.Identity.Name + ".";
         }
 
         protected void ddlCustomers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //ddlApps_BuildList(ddlApps, e, ddlCustomers.SelectedValue);
+            if (ddlCustomers.SelectedValue != "Select")
+            {
+                //Enable add fields
+                browse.Enabled = true;
+                uploadButton.Enabled = true;
+                inputedName.Enabled = true;
+                inputedDate.Enabled = true;
+                inputedVersion.Enabled = true;
+                inputedComments.Enabled = true;
+                pcrinput.Enabled = true;
+            }
+            if (ddlCustomers.SelectedValue == "0")
+            {
+                //Enable add fields
+                browse.Enabled = false;
+                uploadButton.Enabled = false;
+                inputedName.Enabled = false;
+                inputedDate.Enabled = false;
+                inputedVersion.Enabled = false;
+                inputedComments.Enabled = false;
+                pcrinput.Enabled = false;
+            }
+
+            string version = "";
+            string filename = "";
+            string username = "";
+            string uploaddatetime = "";
+            Customer CustomerInfo = new Customer();
+            Dictionary<string,string> info = CustomerInfo.GetCustomer(ddlCustomers.SelectedValue);
+
+            DeploymentInfo DeployInfo = new DeploymentInfo();
+            Dictionary<string, string> deploy = DeployInfo.GetTransaction(ddlCustomers.SelectedValue);
+
+            string ipaddress = info["MRCCIPPrimary"].ToString();
+            string sitetype = info["SiteType"].ToString();
+            string subscribercode = info["SubscriberCode"].ToString();
+            subscribercode = subscribercode.ToString().Replace("CDP-", "");
+            subscribercode = subscribercode.ToString().Replace("SG-", "");
+            subscribercode = subscribercode.Trim();
+
+            if (deploy.Count != 0)
+            {
+                version = deploy["Version"].ToString();
+                filename = deploy["FileTransferred"].ToString();
+                username = deploy["Username"].ToString();
+                uploaddatetime = deploy["UploadDateTime"].ToString();
+            }
+
+            versionInput.Text = version;
+            updatedByWhoInput.Text = username;
+            dateUpdatedInput.Text = uploaddatetime;
+
+
+            if (String.IsNullOrEmpty(version))
+            {
+                version = "1.0.0";
+            }
+            else
+            {
+                string[] numbers = version.Split('.');
+                int patch = Convert.ToInt16(numbers[2]) + 1;
+                version = numbers[0] + "." + numbers[1] + "." + patch.ToString();
+            }
+
+            if (String.IsNullOrEmpty(filename))
+            {
+                filename = subscribercode + ".zip";
+            }
+
+            inputedName.Text = filename;
+            inputedDate.Text = DateTime.Now.ToString();
+            inputedVersion.Text = version;
+
+            if (sitetype == "RDP")
+            {
+                ddlRedirects.Enabled = true;
+                DeploymentInfo HotelInfo = new DeploymentInfo();
+                Dictionary<string, string> UrlRewrite = HotelInfo.GetUrlRewrite(ipaddress);
+                ddlRedirects.Items.Clear();
+
+                foreach (KeyValuePair<string, string> u in UrlRewrite)
+                {
+                    ddlRedirects.Items.Add(new ListItem(u.Value.ToString(), u.Key.ToString()));
+                }
+            }
+            if (sitetype == "CDP")
+            {
+                ddlRedirects.Items.Clear();
+                ddlRedirects.Items.Add(new ListItem("Select", "Selected"));
+                ddlRedirects.Enabled = false;
+            }
+
+            StatusLabel.Text = "Upload status:";
+
+        }
+
+        protected void ddlRedirects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           //code here
         }
 
         protected void ddlCustomers_BuildList(object sender, EventArgs e)
@@ -41,7 +139,7 @@ namespace MDA
             Dictionary<string, string> HotelList = Hotels.GetCustomers();
             ddlCustomers.Items.Clear();
 
-            ddlCustomers.Items.Add(new ListItem("Select", "0"));
+            ddlCustomers.Items.Add(new ListItem("Select", "Select"));
             foreach (KeyValuePair<string, string> o in HotelList)
             {
                 Customer CustomerInfo = new Customer();
@@ -49,43 +147,9 @@ namespace MDA
 
                 foreach (KeyValuePair<string, string> c in objCustomer)
                 {
-                    ddlCustomers.Items.Add(new ListItem(o.Key.ToString() + "-" + c.Key.ToString(), o.Key.ToString()));
-                }
-            }
-        }
-
-        protected void ddlApps_BuildList(object sender, EventArgs e, string SubscriberId)
-        {
-            ServerManager SiteInfo = null;
-            ddlApps.Items.Clear();
-            ddlApps.Items.Add(new ListItem("Select", "0"));
-            if (!String.IsNullOrEmpty(SubscriberId))
-            {
-                DeploymentInfo HotelInfo = new DeploymentInfo();
-                Customer CustomerInfo = new Customer();
-                Dictionary<string, string> objCustomer = CustomerInfo.GetCustomer(SubscriberId);
-
-                foreach (KeyValuePair<string, string> o in objCustomer)
-                {
-                    SiteInfo = HotelInfo.GetSiteInfo(o.Value);
-                }
-
-                int AppID = 1;
-                foreach (var site in SiteInfo.Sites)
-                {
-                    foreach (Microsoft.Web.Administration.Application app in site.Applications)
+                    if (c.Key.ToString() == "CustomerName")
                     {
-                        if (app.VirtualDirectories.Count > 0)
-                        {
-                            foreach (VirtualDirectory vdir in app.VirtualDirectories)
-                            {
-                                if (!vdir.PhysicalPath.Contains("SystemDrive"))
-                                {
-                                    ddlApps.Items.Insert(AppID, new ListItem(vdir.PhysicalPath.Trim().ToUpper().Replace(@"C:\INETPUB\WWWROOT\", "")));
-                                    AppID = AppID + 1;
-                                }
-                            }
-                        }
+                        ddlCustomers.Items.Add(new ListItem(o.Key.ToString() + "-" + c.Value.ToString(), o.Key.ToString()));
                     }
                 }
             }
@@ -104,41 +168,6 @@ namespace MDA
 
             DeploymentInfo HotelInfo = new DeploymentInfo();
             ServerManager SiteInfo = HotelInfo.GetSiteInfo(ipAddress.ToString());
-
-            MessageBox.Show("Delete: " + ddlApps.SelectedValue);
-            HotelInfo.DeleteApp(ipAddress.ToString(), ddlApps.SelectedValue);
-            ddlApps_BuildList(sender, e, ddlCustomers.SelectedValue);
-            MessageBox.Show("Delete Complete");
-        }
-
-        protected void AddSite_Click(Object sender, EventArgs e)
-        {
-            //Enable add fields
-            browse.Enabled = true;
-            uploadButton.Enabled = true;
-            inputedName.Enabled = true;
-            inputedDate.Enabled = true;
-            inputedVersion.Enabled = true;
-            inputedComments.Enabled = true;
-            subnetinput.Enabled = true;
-            pcrinput.Enabled = true;
-            add.Visible = false;
-            cancel.Visible = true;
-        }
-
-        protected void CancelSite_Click(Object sender, EventArgs e)
-        {
-            //Enable add fields
-            browse.Enabled = false;
-            uploadButton.Enabled = false;
-            inputedName.Enabled = false;
-            inputedDate.Enabled = false;
-            inputedVersion.Enabled = false;
-            inputedComments.Enabled = false;
-            subnetinput.Enabled = false;
-            pcrinput.Enabled = false;
-            add.Visible = true;
-            cancel.Visible = false;
         }
 
         protected void EditSite_Click(Object sender, EventArgs e)
@@ -162,68 +191,81 @@ namespace MDA
                 try
                 {
                     string subscribergroup = ddlCustomers.SelectedItem.Value.ToString().Replace("CDP-", "");
-                    //MessageBox.Show("Uploading....." + subscribergroup);
-                    
+                    subscribergroup = subscribergroup.ToString().Replace("SG-", "");
+
                     string filename = Path.GetFileName(browse.FileName);
                     browse.SaveAs(Server.MapPath("~/") + filename);
 
-
+                    DeploymentInfo HotelInfo = new DeploymentInfo();
                     Customer CustomerInfo = new Customer();
                     Dictionary<string, string> objCustomer = CustomerInfo.GetCustomer(ddlCustomers.SelectedItem.Value.ToString());
+                    string ipaddress = objCustomer["MRCCIPPrimary"].ToString();
+                    string sitetype = objCustomer["SiteType"].ToString();
 
-                    foreach (KeyValuePair<string, string> c in objCustomer)
+                    // Copy from the current directory, include subdirectories.
+                    File.Copy(@"C:\MRDOT\Custom Applications\MDA\" + filename , @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + filename);
+                    File.Delete(@"C:\MRDOT\Custom Applications\MDA\" + filename);
+
+                    string zipPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + filename;
+                    string extractPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\RDPSites\\";
+
+                    //Backup existing folder and delete
+                    string startPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\RDPSites\\" + subscribergroup;
+                    string zipPath2 = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\Backup\\" + subscribergroup + "-" + versionInput.Text + ".zip";
+                    ZipFile.CreateFromDirectory(startPath, zipPath2);
+                    HotelInfo.DeleteApp(ipaddress, @"/RDPSites/" + subscribergroup + @"/APPS/MAINMENU");
+                    HotelInfo.DeleteApp(ipaddress, @"/RDPSites/" + subscribergroup + @"/APPS/CHECKOUT");
+                    HotelInfo.DeleteApp(ipaddress, @"/RDPSites/" + subscribergroup + @"/APPS/EVENT");
+                    HotelInfo.DeleteApp(ipaddress, @"/RDPSites/" + subscribergroup + @"/APPS/TGFlight");
+                    System.IO.Directory.Delete(startPath, true);
+
+                    // Expand and then delete
+                    System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractPath);
+                    File.Delete(@"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + filename);
+
+                    //add application
+                    HotelInfo.AddApp(ipaddress, @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\MainMenu", @"/RDPSites/" + subscribergroup + @"/APPS/MAINMENU");
+                    HotelInfo.AddApp(ipaddress, @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\Checkout", @"/RDPSites/" + subscribergroup + @"/APPS/CHECKOUT");
+                    HotelInfo.AddApp(ipaddress, @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\Event", @"/RDPSites/" + subscribergroup + @"/APPS/EVENT");
+                    HotelInfo.AddApp(ipaddress, @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\TGFlight", @"/RDPSites/" + subscribergroup + @"/APPS/TGFlight");
+
+                    using (SqlConnection openCon = new SqlConnection(@"Data Source=TGNDP1SCOMRS001\OPSMGR;Initial Catalog=MDA;Integrated Security=True"))
                     {
-                        // Copy from the current directory, include subdirectories.
-                        File.Copy(@"C:\MRDOT\Custom Applications\MDA\" + filename, @"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\" + filename);
-                        File.Delete(@"C:\MRDOT\Custom Applications\MDA\" + filename);
+                        string saveStaff = "INSERT into TransactionLog (FileTransferred,Version,UploadDateTime,Username,PCRNumber,Comment, SubscriberCode) VALUES (@FileTransferred,@Version,@UploadDateTime,@Username,@PCRNumber,@inputedComments,@SubscriberCode)";
 
-                        string zipPath = @"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\" + filename;
-                        string extractPath = @"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\RDPSites\\";
-
-                        // Expand and then delete
-                        System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractPath);
-                        File.Delete(@"\\" + c.Value.ToString() + "\\c$\\inetpub\\wwwroot\\" + filename);
-
-                        //add application
-                        DeploymentInfo HotelInfo = new DeploymentInfo();
-                        HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\MainMenu", @"/RDPSites/" + subscribergroup + @"/APPS/MAINMENU");
-                        HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\Checkout", @"/RDPSites/" + subscribergroup + @"/APPS/CHECKOUT");
-                        HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\Event", @"/RDPSites/" + subscribergroup + @"/APPS/EVENT");
-                        HotelInfo.AddApp(c.Value.ToString(), @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\TGFlight", @"/RDPSites/" + subscribergroup + @"/APPS/TGFlight");
-
-                        using(SqlConnection openCon=new SqlConnection(@"Data Source=TGNDP1SCOMRS001\OPSMGR;Initial Catalog=MDA;Integrated Security=True"))
+                        using (SqlCommand querySaveLog = new SqlCommand(saveStaff))
                         {
-                            string saveStaff = "INSERT into TransactionLog (FileTransferred,Version,UploadDateTime,Username,PCRNumber) VALUES (@FileTransferred,@Version,@UploadDateTime,@Username,@PCRNumber)";
+                            querySaveLog.Connection = openCon;
+                            querySaveLog.Parameters.Add("@FileTransferred", SqlDbType.VarChar, 50).Value = filename;
+                            string file = System.IO.Path.GetFileNameWithoutExtension(filename);
+                            querySaveLog.Parameters.Add("@Version", SqlDbType.VarChar, 50).Value = inputedVersion.Text;
+                            querySaveLog.Parameters.Add("@UploadDateTime", SqlDbType.DateTime, 50).Value = DateTime.Now;
+                            querySaveLog.Parameters.Add("@Username", SqlDbType.VarChar, 50).Value = Context.User.Identity.Name;
+                            querySaveLog.Parameters.Add("@PCRNumber", SqlDbType.VarChar, 50).Value = pcrinput.Text;
+                            querySaveLog.Parameters.Add("@inputedComments", SqlDbType.VarChar, 50).Value = inputedComments.Text;
+                            querySaveLog.Parameters.Add("@SubscriberCode", SqlDbType.VarChar, 50).Value = ddlCustomers.SelectedItem.Value.ToString();
 
-                          using(SqlCommand querySaveLog = new SqlCommand(saveStaff))
-                           {
-                                querySaveLog.Connection = openCon;
-                                querySaveLog.Parameters.Add("@FileTransferred", SqlDbType.VarChar, 30).Value = filename;
-                                string file = System.IO.Path.GetFileNameWithoutExtension(filename);
-                                querySaveLog.Parameters.Add("@Version", SqlDbType.VarChar, 30).Value = file;
-                                querySaveLog.Parameters.Add("@UploadDateTime", SqlDbType.DateTime, 30).Value = DateTime.Now;
-                                querySaveLog.Parameters.Add("@Username", SqlDbType.VarChar, 30).Value = Context.User.Identity.Name;
-                                querySaveLog.Parameters.Add("@PCRNumber", SqlDbType.VarChar, 30).Value = pcrinput.Text;
-
-
-                                openCon.Open();
-                                querySaveLog.ExecuteNonQuery();
-                                openCon.Close();
-                           }
-                         }
-
+                            openCon.Open();
+                            querySaveLog.ExecuteNonQuery();
+                            openCon.Close();
+                        }
+                    }
 
                         StatusLabel.Text = "Upload status: File uploaded!";
-
-
+                        inputedName.Text = "";
+                        inputedDate.Text = "";
+                        inputedVersion.Text = "";
+                        inputedComments.Text = "";
+                        versionInput.Text = "";
+                        updatedByWhoInput.Text = "";
+                        dateUpdatedInput.Text = "";
+                        pcrinput.Text = "";
                     }
-                }
                 catch (Exception ex)
                 {
                     StatusLabel.Text = "The following error occured: " + ex.Message;
                 }
             }
-        }
-   
+        }   
     }
 }

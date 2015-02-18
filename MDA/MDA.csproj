@@ -47,6 +47,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Administration.7.0.0.0\lib\net20\Microsoft.Web.Administration.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.UI.WebControls">
+      <HintPath>..\..\..\..\..\Desktop\bin\Microsoft.Web.UI.WebControls.dll</HintPath>
+    </Reference>
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />

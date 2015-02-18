@@ -180,10 +180,9 @@ button:hover{
       left:60px;
 }
 #subnet{
-      width:198px;
-      height:26px;
+      width:142px;
+      height:29px;
       background-image: url(/images/RedirectSubnetIP.png);
-      top: 250px;
 }
 #pcrinput{
       position: absolute;

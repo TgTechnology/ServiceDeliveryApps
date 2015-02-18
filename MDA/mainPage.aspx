@@ -21,18 +21,12 @@
                 <div id="pcr"></div>
                 <asp:TextBox runat="server" id="pcrinput" Enabled="false" />
 			</div>
-            <asp:Table ID="Table1" Runat=server BorderWidth="0" CellSpacing="5">
+            <asp:Table ID="Table1" Runat=server BorderWidth="0" CellSpacing="5" GridLines="None">
                 <asp:TableRow>
                     <asp:TableCell>
                        <div id="hotelDropDown"></div>
                     </asp:TableCell>
                     <asp:TableCell>
-                        <!--div id="appsDropDown"></!--div-->
-                    </asp:TableCell>
-                    <asp:TableCell HorizontalAlign="Center">
-                          Action  
-                    </asp:TableCell>
-                    <asp:TableCell HorizontalAlign="Center">
                           <div id="subnet"></div>  
                     </asp:TableCell>
                 </asp:TableRow>
@@ -42,38 +36,18 @@
                         </asp:DropDownList>
                     </asp:TableCell>
                     <asp:TableCell>
-                        &nbsp;<!--<asp:DropDownList ID="ddlApps" runat="server" AutoPostBack="true">
-                        </asp:DropDownList>-->
-                    </asp:TableCell>
-                    <asp:TableCell HorizontalAlign="Center">
-                        <asp:Button ID="delete" OnClick="DeleteSite_Click" runat="server" Text="Delete" />
-                        &nbsp&nbsp
-                        <asp:Button ID="add" OnClick="AddSite_Click" runat="server" Text="Add" />
-                        <asp:Button ID="cancel" OnClick="CancelSite_Click" runat="server" Text="Cancel" Visible="false"/>
-                        &nbsp&nbsp
-                        <asp:Button ID="edit" OnClick="EditSite_Click" runat="server" Text="Edit" />
-                    </asp:TableCell>
-                    <asp:TableCell HorizontalAlign="Center">
-                        <asp:TextBox runat="server" id="subnetinput" Enabled="false" />
+                        <asp:DropDownList ID="ddlRedirects" runat="server" AutoPostBack="true" EnableViewState="true" onselectedindexchanged="ddlRedirects_SelectedIndexChanged" Enabled="false">
+                        </asp:DropDownList>
                     </asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow>
-                    <asp:TableCell>
+                    <asp:TableCell ColumnSpan="2">
                         <asp:Label ID="StatusLabel" runat="server" text="Upload Status: " Font-Name="Arial" Font-Size="10"></asp:Label>
-                    </asp:TableCell>
-                    <asp:TableCell>
-                        &nbsp;
-                    </asp:TableCell>
-                    <asp:TableCell HorizontalAlign="Center">
-                        &nbsp;
-                    </asp:TableCell>
-                    <asp:TableCell HorizontalAlign="Center">
-                        &nbsp;
                     </asp:TableCell>
                 </asp:TableRow>
             </asp:Table>
             <p><div id="selectFile"></div></p>
-            <asp:FileUpload ID="browse" style="margin-left:15px;" runat="server" Enabled="false" />  
+            <asp:FileUpload ID="browse" style="margin-left:15px;" runat="server" Enabled="false" onclick=""/>  
 			<asp:Button id="uploadButton" runat="server" Enabled="false" onclick="uploadButton_Click" /><p></p>
 				<div class="uploadDetails">
 					<div id="uploadedFileDetails"></div>

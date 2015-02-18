@@ -68,12 +68,12 @@ namespace MDA
 
             Dictionary<string, string> SubscriberGroups = new Dictionary<string, string>();
 
-            
+
             foreach (PrincipalManagement.Group1 h in Hotels)
             {
                 if (h.Type.ToString().Contains("Site"))
                 {
-                        SubscriberGroups.Add(h.ExternalID.ToString(), h.Type.ToString());
+                    SubscriberGroups.Add(h.ExternalID.ToString(), h.Type.ToString());
                 }
             }
             return SubscriberGroups;
@@ -87,7 +87,7 @@ namespace MDA
 
             Dictionary<string, string> CustomerInfo = new Dictionary<string, string>();
 
-            string sql = "SELECT *";
+            string sql = "SELECT     SubscriberGroup.*, SubscriberNetwork.*";
             sql += " FROM SubscriberGroup INNER JOIN";
             sql += " SubscriberNetwork ON SubscriberGroup.SubscriberId = SubscriberNetwork.SubscriberId";
             sql += " WHERE  (SubscriberGroup.SubscriberCode = '" + SubscriberCode + "')";
@@ -100,12 +100,16 @@ namespace MDA
 
             while (rdr.Read())
             {
-                CustomerInfo.Add(rdr["Name"].ToString(), rdr["MRCCIPPrimary"].ToString());
+                CustomerInfo.Add("MRCCIPPrimary", rdr["MRCCIPPrimary"].ToString());
+                CustomerInfo.Add("CustomerName", rdr["Name"].ToString());
+                CustomerInfo.Add("SiteType", rdr["SiteType"].ToString());
+                CustomerInfo.Add("SubscriberCode", rdr["SubscriberCode"].ToString());
             }
 
             sqlConnection1.Close();
-
             return CustomerInfo;
         }
+
+
     }
 }
