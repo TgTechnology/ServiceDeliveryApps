@@ -15,6 +15,7 @@ using System.IO.Compression;
 using Microsoft.SqlServer.Server;
 using System.Data;
 using System.Data.SqlClient;
+using SevenZip;
 
 namespace MDA
 {
@@ -35,7 +36,6 @@ namespace MDA
             if (ddlCustomers.SelectedValue != "Select")
             {
                 //Enable add fields
-                browse.Enabled = true;
                 uploadButton.Enabled = true;
                 inputedName.Enabled = true;
                 inputedDate.Enabled = true;
@@ -46,7 +46,6 @@ namespace MDA
             if (ddlCustomers.SelectedValue == "0")
             {
                 //Enable add fields
-                browse.Enabled = false;
                 uploadButton.Enabled = false;
                 inputedName.Enabled = false;
                 inputedDate.Enabled = false;
@@ -186,49 +185,66 @@ namespace MDA
 
         protected void uploadButton_Click(object sender, EventArgs e)
         {
-            if (browse.HasFile)
+            string subscribergroup = ddlCustomers.SelectedItem.Value.ToString().Replace("CDP-", "");
+            subscribergroup = subscribergroup.ToString().Replace("SG-", "");
+            string filename = subscribergroup + ".zip";
+            string rootpath = "C:\\MRDOT\\Custom Applications\\MDA\\Upload\\" + filename;
+            string folderPath = "C:\\MRDOT\\Custom Applications\\MDA\\Upload\\" + subscribergroup;
+
+
+            string site = System.Configuration.ConfigurationManager.AppSettings["Environment"].ToString();
+            if (File.Exists(rootpath))
             {
                 try
                 {
-                    string subscribergroup = ddlCustomers.SelectedItem.Value.ToString().Replace("CDP-", "");
-                    subscribergroup = subscribergroup.ToString().Replace("SG-", "");
-
-                    string filename = Path.GetFileName(browse.FileName);
-                    browse.SaveAs(Server.MapPath("~/") + filename);
-
                     DeploymentInfo HotelInfo = new DeploymentInfo();
                     Customer CustomerInfo = new Customer();
                     Dictionary<string, string> objCustomer = CustomerInfo.GetCustomer(ddlCustomers.SelectedItem.Value.ToString());
                     string ipaddress = objCustomer["MRCCIPPrimary"].ToString();
                     string sitetype = objCustomer["SiteType"].ToString();
 
-                    // Copy from the current directory, include subdirectories.
-                    File.Copy(@"C:\MRDOT\Custom Applications\MDA\" + filename , @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + filename);
-                    File.Delete(@"C:\MRDOT\Custom Applications\MDA\" + filename);
+                    // Expand
+                    System.IO.Compression.ZipFile.ExtractToDirectory(rootpath, "C:\\MRDOT\\Custom Applications\\MDA\\Upload\\");
 
-                    string zipPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + filename;
-                    string extractPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\RDPSites\\";
+                    if (sitetype != "")
+                    { 
+                        string zipPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + filename;
+                        string extractPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + site + "\\";
 
-                    //Backup existing folder and delete
-                    string startPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\RDPSites\\" + subscribergroup;
-                    string zipPath2 = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\Backup\\" + subscribergroup + "-" + versionInput.Text + ".zip";
-                    ZipFile.CreateFromDirectory(startPath, zipPath2);
-                    HotelInfo.DeleteApp(ipaddress, @"/RDPSites/" + subscribergroup + @"/APPS/MAINMENU");
-                    HotelInfo.DeleteApp(ipaddress, @"/RDPSites/" + subscribergroup + @"/APPS/CHECKOUT");
-                    HotelInfo.DeleteApp(ipaddress, @"/RDPSites/" + subscribergroup + @"/APPS/EVENT");
-                    HotelInfo.DeleteApp(ipaddress, @"/RDPSites/" + subscribergroup + @"/APPS/TGFlight");
-                    System.IO.Directory.Delete(startPath, true);
+                        //Backup existing folder and delete
+                        string startPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + site + "\\" + subscribergroup;
+                       
+                        //Move folder to backup folder for archive
+                        HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/MainMenu");
+                        HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/Checkout");
+                        HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/Events");
+                        HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/TGFlight");
+                        HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/Chooser");
 
-                    // Expand and then delete
-                    System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractPath);
-                    File.Delete(@"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + filename);
+                        Utilities oUtil = new Utilities();
+                        oUtil = new Utilities();
+                        oUtil.MoveFolder(startPath, "\\\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\Backup\\" + subscribergroup + "-" + versionInput.Text);
+                        DirectoryInfo srcPath = new DirectoryInfo("C:\\MRDOT\\Custom Applications\\MDA\\Upload\\" + subscribergroup);
+                        DirectoryInfo newPath = new DirectoryInfo(@"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + site + "\\" + subscribergroup);
+                        oUtil.CopyFolder(srcPath, newPath);
+                        File.Delete(rootpath);
+                        Directory.Delete(folderPath, true);
 
-                    //add application
-                    HotelInfo.AddApp(ipaddress, @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\MainMenu", @"/RDPSites/" + subscribergroup + @"/APPS/MAINMENU");
-                    HotelInfo.AddApp(ipaddress, @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\Checkout", @"/RDPSites/" + subscribergroup + @"/APPS/CHECKOUT");
-                    HotelInfo.AddApp(ipaddress, @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\Event", @"/RDPSites/" + subscribergroup + @"/APPS/EVENT");
-                    HotelInfo.AddApp(ipaddress, @"C:\inetpub\wwwroot\RDPSites\" + subscribergroup + @"\Apps\TGFlight", @"/RDPSites/" + subscribergroup + @"/APPS/TGFlight");
+                        //add application
+                        string appPath = "/" + site + "/" + subscribergroup + "/Apps/";
+                        string sitePath = @"C:\inetpub\wwwroot\RDPSites\100010\Apps\";
+                        
+                        HotelInfo.AddApp(ipaddress, appPath + "MainMenu", sitePath + "MainMenu");
+                        HotelInfo.AddApp(ipaddress, appPath + "Checkout", sitePath + "Checkout");
+                        HotelInfo.AddApp(ipaddress, appPath + "Events", sitePath + "Events");
+                        HotelInfo.AddApp(ipaddress, appPath + "TGFlight", sitePath + "TGFlight");
+                        HotelInfo.AddApp(ipaddress, appPath + "Chooser", sitePath + "Chooser");
 
+                        string status = "";
+                        status = oUtil.StopService("10.5.30.13", "W3SVC");
+                        status = oUtil.StartService("10.5.30.13", "W3SVC");
+
+                    }
                     using (SqlConnection openCon = new SqlConnection(@"Data Source=TGNDP1SCOMRS001\OPSMGR;Initial Catalog=MDA;Integrated Security=True"))
                     {
                         string saveStaff = "INSERT into TransactionLog (FileTransferred,Version,UploadDateTime,Username,PCRNumber,Comment, SubscriberCode) VALUES (@FileTransferred,@Version,@UploadDateTime,@Username,@PCRNumber,@inputedComments,@SubscriberCode)";

@@ -50,12 +50,17 @@
     <Reference Include="Microsoft.Web.UI.WebControls">
       <HintPath>..\..\..\..\..\Desktop\bin\Microsoft.Web.UI.WebControls.dll</HintPath>
     </Reference>
+    <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\SevenZipSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -75,6 +80,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ClientBin\mpost.SilverlightMultiFileUpload.Lite.xap" />
+    <Content Include="ClientBin\mpost.SilverlightMultiFileUpload.Progress.xap" />
+    <Content Include="ClientBin\mpost.SilverlightMultiFileUpload.xap" />
+    <Content Include="ClientBin\mpost.SilverlightSingleFileUpload.xap" />
     <Content Include="css\stylesheet.css" />
     <Content Include="Default.aspx" />
     <Content Include="editProfilePage.html" />
@@ -112,6 +121,7 @@
     <Content Include="images\save_button.png" />
     <Content Include="images\selectfile_banner.png" />
     <Content Include="images\selecthotel_banner.png" />
+    <Content Include="images\SubmitButton.png" />
     <Content Include="images\topbanner.png" />
     <Content Include="images\updatedby_field.png" />
     <Content Include="images\update_nonselected.png" />
@@ -124,6 +134,8 @@
     <Content Include="mainPage.aspx" />
     <Content Include="profilePage.html" />
     <Content Include="packages.config" />
+    <Content Include="HttpUploadHandler.ashx" />
+    <None Include="Properties\PublishProfiles\PROD.pubxml" />
     <None Include="script\jquery-1.2.6-vsdoc.js" />
     <Content Include="script\jquery-1.2.6.js" />
     <Content Include="Service References\PrincipalManagement\MDA.PrincipalManagement.Account.datasource">
@@ -224,6 +236,11 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Silverlight.js" />
+    <Content Include="slmfu.lite.default.aspx" />
+    <Content Include="slmfu.multi.default.aspx" />
+    <Content Include="slmfu.multi.JavascriptIntegration.aspx" />
+    <Content Include="slmfu.single.default.aspx" />
     <Content Include="TestPage.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -276,6 +293,9 @@
     <Compile Include="TestPage.aspx.designer.cs">
       <DependentUpon>TestPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UploadHandler.ashx.cs">
+      <DependentUpon>UploadHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +315,8 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\RemoteRecord2\RemoteRecord2.wsdl" />
+    <Content Include="Upload\_remove.temp" />
+    <Content Include="UploadHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

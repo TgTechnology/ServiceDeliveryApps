@@ -103,9 +103,10 @@ namespace MDA
 
         }
 
-        public void AddApp(string SiteIP, string sitePath, string appPath)
+        public void AddApp(string SiteIP, string appPath, string sitePath)
         {
             ServerManager manager = ServerManager.OpenRemote(SiteIP);
+
             manager.Sites["Default Web Site"].Applications.Add(appPath, sitePath);
             manager.CommitChanges();
         }

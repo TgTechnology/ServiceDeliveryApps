@@ -45,9 +45,25 @@
                         <asp:Label ID="StatusLabel" runat="server" text="Upload Status: " Font-Name="Arial" Font-Size="10"></asp:Label>
                     </asp:TableCell>
                 </asp:TableRow>
+                 <asp:TableRow>
+                    <asp:TableCell ColumnSpan="2">
+                        <object id="MultiFileUploader" data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="500" height="50">
+                            <param name="source" value="ClientBin/mpost.SilverlightSingleFileUpload.xap" />
+                            <param name="onerror" value="onSilverlightError" />
+                            <param name="initParams" value="MaxFileSizeKB=,FileFilter=,ChunkSize=4194304,CustomParams=yourparameters,DefaultColor=White" />
+                            <param name="background" value="white" />
+                            <param name="onload" value="pluginLoaded" />
+                            <param name="minRuntimeVersion" value="5.0.61118.0" />
+                            <param name="autoUpgrade" value="true" />
+                            <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration: none">
+                            <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight"
+                            style="border-style: none" />
+                            </a>
+                        </object>
+                        <iframe style='visibility: hidden; height: 0; width: 0; border: 0px'></iframe> 
+                    </asp:TableCell>
+                </asp:TableRow>
             </asp:Table>
-            <p><div id="selectFile"></div></p>
-            <asp:FileUpload ID="browse" style="margin-left:15px;" runat="server" Enabled="false" onclick=""/>  
 			<asp:Button id="uploadButton" runat="server" Enabled="false" onclick="uploadButton_Click" /><p></p>
 				<div class="uploadDetails">
 					<div id="uploadedFileDetails"></div>
