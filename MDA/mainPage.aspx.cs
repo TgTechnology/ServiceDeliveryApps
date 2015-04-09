@@ -26,7 +26,7 @@ namespace MDA
             if (ddlCustomers.Items.Count == 0)
             {
                 ddlCustomers_BuildList(ddlCustomers, e);
-                ddlRedirects.Items.Add(new ListItem("Select", "Selected"));
+                //ddlRedirects.Items.Add(new ListItem("Select", "Selected"));
             }
             loginName.Text = "Welcome " + Context.User.Identity.Name + ".";
         }
@@ -104,24 +104,24 @@ namespace MDA
             inputedDate.Text = DateTime.Now.ToString();
             inputedVersion.Text = version;
 
-            if (sitetype == "RDP")
-            {
-                ddlRedirects.Enabled = true;
-                DeploymentInfo HotelInfo = new DeploymentInfo();
-                Dictionary<string, string> UrlRewrite = HotelInfo.GetUrlRewrite(ipaddress);
-                ddlRedirects.Items.Clear();
+            //if (sitetype == "RDP")
+            //{
+            //    ddlRedirects.Enabled = true;
+            //    DeploymentInfo HotelInfo = new DeploymentInfo();
+            //    Dictionary<string, string> UrlRewrite = HotelInfo.GetUrlRewrite(ipaddress);
+            //    ddlRedirects.Items.Clear();
 
-                foreach (KeyValuePair<string, string> u in UrlRewrite)
-                {
-                    ddlRedirects.Items.Add(new ListItem(u.Value.ToString(), u.Key.ToString()));
-                }
-            }
-            if (sitetype == "CDP")
-            {
-                ddlRedirects.Items.Clear();
-                ddlRedirects.Items.Add(new ListItem("Select", "Selected"));
-                ddlRedirects.Enabled = false;
-            }
+            //    foreach (KeyValuePair<string, string> u in UrlRewrite)
+            //    {
+            //        ddlRedirects.Items.Add(new ListItem(u.Value.ToString(), u.Key.ToString()));
+            //    }
+            //}
+            //if (sitetype == "CDP")
+            //{
+            //    ddlRedirects.Items.Clear();
+            //    ddlRedirects.Items.Add(new ListItem("Select", "Selected"));
+            //    ddlRedirects.Enabled = false;
+            //}
 
             StatusLabel.Text = "Upload status:";
 
@@ -185,103 +185,108 @@ namespace MDA
 
         protected void uploadButton_Click(object sender, EventArgs e)
         {
+            //Get customer information to map paths to PF Server
+            DeploymentInfo HotelInfo = new DeploymentInfo();
+            Customer CustomerInfo = new Customer();
+            Dictionary<string, string> objCustomer = CustomerInfo.GetCustomer(ddlCustomers.SelectedItem.Value.ToString());
+            string ipaddress = objCustomer["MRCCIPPrimary"].ToString();
+            string sitetype = objCustomer["SiteType"].ToString();
+
+            //Create paths to PF Servers for menu deployment
+            string site = System.Configuration.ConfigurationManager.AppSettings["Environment"].ToString();
             string subscribergroup = ddlCustomers.SelectedItem.Value.ToString().Replace("CDP-", "");
             subscribergroup = subscribergroup.ToString().Replace("SG-", "");
             string filename = subscribergroup + ".zip";
             string rootpath = "C:\\MRDOT\\Custom Applications\\MDA\\Upload\\" + filename;
             string folderPath = "C:\\MRDOT\\Custom Applications\\MDA\\Upload\\" + subscribergroup;
 
+            string startPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + site + "\\" + subscribergroup;
+            string backupPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\Backup\\" + subscribergroup + "-" + versionInput.Text;
 
-            string site = System.Configuration.ConfigurationManager.AppSettings["Environment"].ToString();
-            if (File.Exists(rootpath))
-            {
-                try
-                {
-                    DeploymentInfo HotelInfo = new DeploymentInfo();
-                    Customer CustomerInfo = new Customer();
-                    Dictionary<string, string> objCustomer = CustomerInfo.GetCustomer(ddlCustomers.SelectedItem.Value.ToString());
-                    string ipaddress = objCustomer["MRCCIPPrimary"].ToString();
-                    string sitetype = objCustomer["SiteType"].ToString();
-
-                    // Expand
-                    System.IO.Compression.ZipFile.ExtractToDirectory(rootpath, "C:\\MRDOT\\Custom Applications\\MDA\\Upload\\");
-
-                    if (sitetype != "")
-                    { 
-                        string zipPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + filename;
-                        string extractPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + site + "\\";
-
-                        //Backup existing folder and delete
-                        string startPath = @"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + site + "\\" + subscribergroup;
-                       
-                        //Move folder to backup folder for archive
-                        HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/MainMenu");
-                        HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/Checkout");
-                        HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/Events");
-                        HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/TGFlight");
-                        HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/Chooser");
-
-                        Utilities oUtil = new Utilities();
-                        oUtil = new Utilities();
-                        oUtil.MoveFolder(startPath, "\\\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\Backup\\" + subscribergroup + "-" + versionInput.Text);
-                        DirectoryInfo srcPath = new DirectoryInfo("C:\\MRDOT\\Custom Applications\\MDA\\Upload\\" + subscribergroup);
-                        DirectoryInfo newPath = new DirectoryInfo(@"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + site + "\\" + subscribergroup);
-                        oUtil.CopyFolder(srcPath, newPath);
-                        File.Delete(rootpath);
-                        Directory.Delete(folderPath, true);
-
-                        //add application
-                        string appPath = "/" + site + "/" + subscribergroup + "/Apps/";
-                        string sitePath = @"C:\inetpub\wwwroot\RDPSites\100010\Apps\";
-                        
-                        HotelInfo.AddApp(ipaddress, appPath + "MainMenu", sitePath + "MainMenu");
-                        HotelInfo.AddApp(ipaddress, appPath + "Checkout", sitePath + "Checkout");
-                        HotelInfo.AddApp(ipaddress, appPath + "Events", sitePath + "Events");
-                        HotelInfo.AddApp(ipaddress, appPath + "TGFlight", sitePath + "TGFlight");
-                        HotelInfo.AddApp(ipaddress, appPath + "Chooser", sitePath + "Chooser");
-
-                        string status = "";
-                        status = oUtil.StopService("10.5.30.13", "W3SVC");
-                        status = oUtil.StartService("10.5.30.13", "W3SVC");
-
-                    }
-                    using (SqlConnection openCon = new SqlConnection(@"Data Source=TGNDP1SCOMRS001\OPSMGR;Initial Catalog=MDA;Integrated Security=True"))
+            try
+                {   
+                    if (File.Exists(rootpath))
                     {
-                        string saveStaff = "INSERT into TransactionLog (FileTransferred,Version,UploadDateTime,Username,PCRNumber,Comment, SubscriberCode) VALUES (@FileTransferred,@Version,@UploadDateTime,@Username,@PCRNumber,@inputedComments,@SubscriberCode)";
+                        // Expand
+                        System.IO.Compression.ZipFile.ExtractToDirectory(rootpath, "C:\\MRDOT\\Custom Applications\\MDA\\Upload\\");
 
-                        using (SqlCommand querySaveLog = new SqlCommand(saveStaff))
+                        if (sitetype != "")
                         {
-                            querySaveLog.Connection = openCon;
-                            querySaveLog.Parameters.Add("@FileTransferred", SqlDbType.VarChar, 50).Value = filename;
-                            string file = System.IO.Path.GetFileNameWithoutExtension(filename);
-                            querySaveLog.Parameters.Add("@Version", SqlDbType.VarChar, 50).Value = inputedVersion.Text;
-                            querySaveLog.Parameters.Add("@UploadDateTime", SqlDbType.DateTime, 50).Value = DateTime.Now;
-                            querySaveLog.Parameters.Add("@Username", SqlDbType.VarChar, 50).Value = Context.User.Identity.Name;
-                            querySaveLog.Parameters.Add("@PCRNumber", SqlDbType.VarChar, 50).Value = pcrinput.Text;
-                            querySaveLog.Parameters.Add("@inputedComments", SqlDbType.VarChar, 50).Value = inputedComments.Text;
-                            querySaveLog.Parameters.Add("@SubscriberCode", SqlDbType.VarChar, 50).Value = ddlCustomers.SelectedItem.Value.ToString();
+                            //Move folder to backup folder for archive
+                            HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/MainMenu");
+                            HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/Checkout");
+                            HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/Events");
+                            HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/TGFlight");
+                            HotelInfo.DeleteApp(ipaddress, @"/" + site + "/" + subscribergroup + @"/APPS/Chooser");
 
-                            openCon.Open();
-                            querySaveLog.ExecuteNonQuery();
-                            openCon.Close();
+                            //Backup existing folder and delete
+                            Utilities oUtil = new Utilities();
+                            oUtil = new Utilities();
+                            oUtil.MoveFolder(startPath, backupPath);
+                            Directory.CreateDirectory(startPath);
+                            DirectoryInfo srcPath = new DirectoryInfo("C:\\MRDOT\\Custom Applications\\MDA\\Upload\\" + subscribergroup);
+                            DirectoryInfo newPath = new DirectoryInfo(@"\\" + ipaddress + "\\c$\\inetpub\\wwwroot\\" + site + "\\" + subscribergroup);
+                            srcPath.Attributes = FileAttributes.Normal;
+                            newPath.Attributes = FileAttributes.Normal;
+                            oUtil.CopyFolder(srcPath, newPath);
+                            File.Delete(rootpath);
+                            Directory.Delete(folderPath, true);
+
+                            //add application
+                            string appPath = "/" + site + "/" + subscribergroup + "/Apps/";
+                            string sitePath = @"C:\inetpub\wwwroot\" + site + @"\" + subscribergroup + @"\Apps\";
+
+                            HotelInfo.AddApp(ipaddress, appPath + "MainMenu", sitePath + "MainMenu");
+                            HotelInfo.AddApp(ipaddress, appPath + "Checkout", sitePath + "Checkout");
+                            HotelInfo.AddApp(ipaddress, appPath + "Events", sitePath + "Events");
+                            HotelInfo.AddApp(ipaddress, appPath + "TGFlight", sitePath + "TGFlight");
+                            HotelInfo.AddApp(ipaddress, appPath + "Chooser", sitePath + "Chooser");
+
+                            string status = "";
+                            status = oUtil.StopService(ipaddress, "W3SVC");
+                            status = oUtil.StartService(ipaddress, "W3SVC");
+
+                        }
+                        using (SqlConnection openCon = new SqlConnection(@"Data Source=TGNDP1SCOMRS001\OPSMGR;Initial Catalog=MDA;Integrated Security=True"))
+                        {
+                            string saveStaff = "INSERT into TransactionLog (FileTransferred,Version,UploadDateTime,Username,PCRNumber,Comment, SubscriberCode) VALUES (@FileTransferred,@Version,@UploadDateTime,@Username,@PCRNumber,@inputedComments,@SubscriberCode)";
+
+                            using (SqlCommand querySaveLog = new SqlCommand(saveStaff))
+                            {
+                                querySaveLog.Connection = openCon;
+                                querySaveLog.Parameters.Add("@FileTransferred", SqlDbType.VarChar, 50).Value = filename;
+                                string file = System.IO.Path.GetFileNameWithoutExtension(filename);
+                                querySaveLog.Parameters.Add("@Version", SqlDbType.VarChar, 50).Value = inputedVersion.Text;
+                                querySaveLog.Parameters.Add("@UploadDateTime", SqlDbType.DateTime, 50).Value = DateTime.Now;
+                                querySaveLog.Parameters.Add("@Username", SqlDbType.VarChar, 50).Value = Context.User.Identity.Name;
+                                querySaveLog.Parameters.Add("@PCRNumber", SqlDbType.VarChar, 50).Value = pcrinput.Text;
+                                querySaveLog.Parameters.Add("@inputedComments", SqlDbType.VarChar, 50).Value = inputedComments.Text;
+                                querySaveLog.Parameters.Add("@SubscriberCode", SqlDbType.VarChar, 50).Value = ddlCustomers.SelectedItem.Value.ToString();
+
+                                openCon.Open();
+                                querySaveLog.ExecuteNonQuery();
+                                openCon.Close();
+                            }
+                            StatusLabel.Text = "Upload status: File uploaded!";
+                            inputedName.Text = "";
+                            inputedDate.Text = "";
+                            inputedVersion.Text = "";
+                            inputedComments.Text = "";
+                            versionInput.Text = "";
+                            updatedByWhoInput.Text = "";
+                            dateUpdatedInput.Text = "";
+                            pcrinput.Text = "";
                         }
                     }
-
-                        StatusLabel.Text = "Upload status: File uploaded!";
-                        inputedName.Text = "";
-                        inputedDate.Text = "";
-                        inputedVersion.Text = "";
-                        inputedComments.Text = "";
-                        versionInput.Text = "";
-                        updatedByWhoInput.Text = "";
-                        dateUpdatedInput.Text = "";
-                        pcrinput.Text = "";
-                    }
-                catch (Exception ex)
-                {
-                    StatusLabel.Text = "The following error occured: " + ex.Message;
                 }
-            }
-        }   
+            catch (Exception ex)
+                {
+                    //Clean-up files and directories
+                    if(File.Exists(rootpath)){File.Delete(rootpath);}
+                    if (Directory.Exists(folderPath)) { Directory.Delete(folderPath, true); }
+                    if (Directory.Exists(backupPath)) { Directory.Delete(backupPath, true); }
+                    StatusLabel.Text = "The following error occured: " + ex.Message;
+                }  
+        }  
     }
 }

@@ -27,7 +27,7 @@
                        <div id="hotelDropDown"></div>
                     </asp:TableCell>
                     <asp:TableCell>
-                          <div id="subnet"></div>  
+                          <%--<div id="subnet"></div>--%>  
                     </asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow>
@@ -36,8 +36,8 @@
                         </asp:DropDownList>
                     </asp:TableCell>
                     <asp:TableCell>
-                        <asp:DropDownList ID="ddlRedirects" runat="server" AutoPostBack="true" EnableViewState="true" onselectedindexchanged="ddlRedirects_SelectedIndexChanged" Enabled="false">
-                        </asp:DropDownList>
+                        <%--<asp:DropDownList ID="ddlRedirects" runat="server" AutoPostBack="true" EnableViewState="true" onselectedindexchanged="ddlRedirects_SelectedIndexChanged" Enabled="false">
+                        </asp:DropDownList>--%>
                     </asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow>
