@@ -22,12 +22,10 @@ namespace MDA
 
         public void MoveFolder(string srcPath, string destPath)
         {
-            string sourceDirectory = srcPath;
-            string destinationDirectory = destPath;
 
             try
             {
-                Directory.Move(sourceDirectory, destinationDirectory);
+                Directory.Move(srcPath, destPath);
             }
             catch (Exception ex)
             {
