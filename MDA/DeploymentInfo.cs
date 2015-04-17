@@ -96,11 +96,15 @@ namespace MDA
 
         public void DeleteApp(string SiteIP, string appPath)
         {
-            ServerManager manager = ServerManager.OpenRemote(SiteIP);
-            Microsoft.Web.Administration.Application application = manager.Sites["Default Web Site"].Applications[appPath];
-            manager.Sites["Default Web Site"].Applications.Remove(application);
-            manager.CommitChanges();
-
+            //Check if app exists
+            bool exists = Exists(appPath, SiteIP);
+            if (exists)
+            {   
+                ServerManager manager = ServerManager.OpenRemote(SiteIP);
+                Microsoft.Web.Administration.Application application = manager.Sites["Default Web Site"].Applications[appPath];
+                manager.Sites["Default Web Site"].Applications.Remove(application);
+                manager.CommitChanges();
+            }
         }
 
         public void AddApp(string SiteIP, string appPath, string sitePath)
@@ -109,6 +113,25 @@ namespace MDA
 
             manager.Sites["Default Web Site"].Applications.Add(appPath, sitePath);
             manager.CommitChanges();
+        }
+
+        public bool Exists(string name,string SiteIP)
+        {
+            bool result = false;
+            ServerManager manager = ServerManager.OpenRemote(SiteIP);
+            Microsoft.Web.Administration.ApplicationCollection applications = manager.Sites["Default Web Site"].Applications;
+            List<string> apps = new List<string>();
+            foreach (Microsoft.Web.Administration.Application application in applications)
+            {
+                //get the name of the ApplicationName
+                apps.Add(application.Path.ToString());
+            }
+
+            if (apps.Contains(name))
+            {
+                result = true;
+            }
+            return result;
         }
 
 
