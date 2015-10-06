@@ -1,6 +1,16 @@
+/* CSS reset */
+html,body {
+    margin:0;
+    padding:0;
+}
+
 * {
     font-family: Arial;
 }
+
+/*div {
+    border: 1px solid #000000;
+}*/
 
 .indexTopper{
       margin-left:-10px;
@@ -9,11 +19,13 @@
       width:1351px;
       height:90px;
       margin-top:0px;
+      overflow:hidden;
 }
 
 button:hover{
       box-shadow: 0px 0px 5px #ffffff;
 }
+
 .profile{
       float:right;
       margin-top: -1px;
@@ -23,6 +35,7 @@ button:hover{
       height:36px;
       border:none;
 }
+
 #loginName{
       float:right;
       margin-top: -20px;
@@ -31,6 +44,7 @@ button:hover{
       font-size: 12px;
       color:white;
 }
+
 #errorLabel{
       margin-top: -35px;
       margin-left: 20px;
@@ -51,6 +65,7 @@ button:hover{
       font-size: 17px;
       color:white;
 }
+
 .selectedProfile{
       float:right;
       margin-top: -25px;
@@ -65,7 +80,6 @@ button:hover{
       width:500px;
       height:39px;
       margin-left:8px;
-      margin-bottom:;
       margin-top:-10px;
       font-size: 35px;
       line-height: -27px;
@@ -113,6 +127,7 @@ button:hover{
 #chkPersist{
       margin-left:20px;
 }
+
 #passwordLogin{
       background-image: url(/images/password_field.png);
       width:403px;
@@ -129,6 +144,7 @@ button:hover{
       margin-top: 30px;
       margin-right: 200px;
 }
+
 .contentLeft{
       width:855px;
       height:405px;
@@ -140,21 +156,15 @@ button:hover{
 
 .uploadDetails{
       height:220px;
-      width: 720px;
-      float:left;
-      background-color: ;
+      width: 700px;
 }
 
 .contentRight{
-      position: absolute;
-      width:355px;
-      height:405px;
-      margin-top: -400px;
-      margin-right:45px;
-      margin-left: 960px;
-      border-radius:5px;
-      background-image:url(/images/rightcontainer.png);
-      float:right;
+    width:355px;
+    height:405px;
+    margin-top: -405px;
+    margin-right: 100px;
+    background-image:url(/images/rightcontainer.png);
 }
 
 #information{
@@ -162,100 +172,65 @@ button:hover{
       height:36px;
       background-image: url(/images/information.png);
 }
-#hotelDropDown{
+
+#customerSite{
       width:101px;
       height:26px;
       background-image: url(/images/CustomerSite.png);
-      /*margin-top: -20px;
-      margin-bottom: -10px;
       margin-left: 15px;
-      position: absolute;*/
+      position: relative;
 }
+
 #pcr{
       width:198px;
-      height:25px;
+      height:24px;
       background-image: url(/images/PCR_field.png);
-      position: absolute;
-      top: 100px;
-      left:60px;
 }
 
-#subnet{
-      width:142px;
-      height:29px;
-      background-image: url(/images/RedirectSubnetIP.png);
-}
 #pcrinput{
-      position: absolute;
-      top: 120px;
-      width:150px;
-      height:20px;
-      left:60px;
-}
-/*#ddlCustomers{
-      margin-top: 20px;
-      margin-bottom: -10px;
       margin-left: 15px;
-      position: relative;
-}*/
-
-#appsDropDown{
-      width:101px;
-      height:26px;
-      background-image: url(/images/InstalledApps.png);
+      position: absolute;
 }
 
-
-/*#ddlApps{
-      margin-top: 20px;
-      margin-bottom: -10px;
-      margin-left: 50px;
-      position: relative;
-}*/
+#ddlCustomers{
+      margin-left: 15px;
+}
 
 #currentVersion{
       background-image:url(/images/currentversion_field.png);
       width:87px;
       height:20px;
-      position: absolute;
-      top: 40px;
-      left: 20px;
-
 }
 
-#versionInput{
+/*#versionInput{
       position: absolute;
       top: 70px;
       left: 20px;
-}
-
+}*/
 
 #updatedByWho{
       background-image:url(/images/updatedby_field.png);
       width:87px;
       height:20px;
-      position: absolute;
-      top: 100px;
-      left: 20px;
 }
-#updatedByWhoInput{
+
+/*#updatedByWhoInput{
       position: absolute;
       top: 130px;
       left: 20px;
-}
+}*/
+
 #dateUpdated{
       background-image:url(/images/dateupdated_field.png);
       width:87px;
       height:20px;
-      position: absolute;
-      top: 160px;
-      left: 20px;
 }
-#dateUpdatedInput{
+
+/*#dateUpdatedInput{
       position: absolute;
       top: 190px;
       left: 20px;
-}
+}*/
 
 #selectFile{
       width:74px;
@@ -269,12 +244,10 @@ button:hover{
 #uploadButton{
       width: 99px;
       height:36px;
-      float:right;
-      margin-top: 198px;
-      margin-right: 20px;
       background-image: url(/images/SubmitButton.png);
-      margin-left: 15px;
-
+      position:absolute;
+      left:650px;
+      top:675px;
 }
 
 #editProfileName{
@@ -352,6 +325,7 @@ button:hover{
       width:119px;
       height:36px;
 }
+
 #profileInfo{
       margin-left: 25px;
 
@@ -393,8 +367,18 @@ button:hover{
       background-image: url(/images/comments_field.png);
       width:212px;
       height:23px;
-      margin-bottom: 10px;
-      margin-left: 15px;
+      margin-top: -190px;
+      margin-right: 150px;
+}
+
+#uploadButton{
+      margin-top: -190px;
+      margin-right: 112px;
+}
+
+#inputedComments{
+      margin-top: -158px;
+      margin-right: 112px;
 }
 
 #editProfileTitle{

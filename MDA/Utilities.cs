@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using System.ServiceProcess;
 using System.Diagnostics;
 using System.Diagnostics.Eventing;
+using System.Management;
 
 namespace MDA
 {
@@ -18,6 +18,13 @@ namespace MDA
         public string GetSubstringByString(string a, string b, string c)
         {
             return c.Substring((c.IndexOf(a) + a.Length), (c.IndexOf(b) - c.IndexOf(a) - a.Length));
+        }
+
+        public string GetSubscriberNumber(string a)
+        {
+            a = a.Replace("CDP-", "");
+            a = a.Replace("SG-", "");
+            return a;
         }
 
         public void MoveFolder(string srcPath, string destPath)
@@ -88,5 +95,73 @@ namespace MDA
             }
             return result;
         }
+
+        public int StopNLB(string hostAddress)
+        {
+
+            ManagementScope NLBScope = new ManagementScope("\\\\" + hostAddress + "\\root\\MicrosoftNLB");
+            ManagementClass NLBClass = new ManagementClass(NLBScope, new ManagementPath("MicrosoftNLB_Node"), null);
+
+            try
+            {
+                NLBClass.Get();
+                object status = null;
+                hostAddress = hostAddress + ":1";
+                foreach (ManagementObject node in NLBClass.GetInstances())
+                {
+                    string compName = node.GetPropertyValue("Name").ToString();
+
+                    if (compName == hostAddress)
+                    {
+                        node.Get();
+                        node.InvokeMethod("Stop", null);
+                        status = node.GetPropertyValue("StatusCode");
+                    }
+                }
+                
+                return Convert.ToInt32(status);
+            }
+            catch (InvalidOperationException)
+            {
+                // do something
+                return 0;
+            }
+            
+        }
+
+        public int StartNLB(string hostAddress)
+        {
+
+            ManagementScope NLBScope = new ManagementScope("\\\\" + hostAddress + "\\root\\MicrosoftNLB");
+            ManagementClass NLBClass = new ManagementClass(NLBScope, new ManagementPath("MicrosoftNLB_Node"), null);
+
+            try
+            {
+                NLBClass.Get();
+                object status = null;
+                hostAddress = hostAddress + ":1";
+
+                foreach (ManagementObject node in NLBClass.GetInstances())
+                {
+                    string compName = node.GetPropertyValue("Name").ToString();
+
+                    if (compName == hostAddress)
+                    {
+                        node.Get();
+                        node.InvokeMethod("Start", null);
+                        status = node.GetPropertyValue("StatusCode");
+                    }
+                }
+
+                return Convert.ToInt32(status);
+            }
+            catch (InvalidOperationException)
+            {
+                // do something
+                return 0;
+            }
+
+        }
+
     }
 }

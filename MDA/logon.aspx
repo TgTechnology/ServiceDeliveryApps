@@ -7,7 +7,8 @@
 	</head>
     <body>
         <div class="indexTopper" style="margin-top:-10px;"></div>
-        <div id="loginContainer">
+        <div id="loginContainer" style="z-index:1">
+            <div style="z-index:2; width:auto; height:200px;margin-top:90px;">
             <form id="Login" method="post" runat="server">
                 <asp:Label ID="errorLabel" Runat=server></asp:Label>
                 <div id="usernameLogin"></div><br />
@@ -17,6 +18,7 @@
                 <asp:Button ID="loginButton" Runat=server OnClick="Login_Click"></asp:Button><br />
                 <asp:CheckBox ID=chkPersist Runat=server Text="Remember Me" />
             </form>
+            </div>
         </div>
     </body>
 </html>
@@ -26,40 +28,40 @@ void Login_Click(object sender, EventArgs e){
     string adPath = "LDAP://TGMGMTDC04.MGMT.IPTVTG.COM/DC=mgmt,DC=iptvtg,DC=com"; //Path to your LDAP directory server
     //string adPath = "LDAP://TGNDP1MRDC001/DC=BR,DC=iptvtg,DC=com"; //Path to your LDAP directory server
     LdapAuthentication adAuth = new LdapAuthentication(adPath);
-  try
-  {
-    if(true == adAuth.IsAuthenticated("mgmt", txtUsername.Text, txtPassword.Text))
+    try
     {
-        string groups = "empty"; //adAuth.GetGroups();
+        if (true == adAuth.IsAuthenticated("mgmt", txtUsername.Text, txtPassword.Text))
+        {
+            string groups = "empty"; //adAuth.GetGroups();
 
-      //Create the ticket, and add the groups.
-      bool isCookiePersistent = chkPersist.Checked;
-      FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1, 
-                txtUsername.Text,DateTime.Now, DateTime.Now.AddMinutes(60), isCookiePersistent, groups);
+            //Create the ticket, and add the groups.
+            bool isCookiePersistent = chkPersist.Checked;
+            FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1,
+                      txtUsername.Text, DateTime.Now, DateTime.Now.AddMinutes(60), isCookiePersistent, groups);
 
-      //Encrypt the ticket.
-      string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+            //Encrypt the ticket.
+            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
 
-      //Create a cookie, and then add the encrypted ticket to the cookie as data.
-      HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+            //Create a cookie, and then add the encrypted ticket to the cookie as data.
+            HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
 
-      if(true == isCookiePersistent)
-      authCookie.Expires = authTicket.Expiration;
+            if (true == isCookiePersistent)
+                authCookie.Expires = authTicket.Expiration;
 
-      //Add the cookie to the outgoing cookies collection.
-      Response.Cookies.Add(authCookie);
+            //Add the cookie to the outgoing cookies collection.
+            Response.Cookies.Add(authCookie);
 
-      //You can redirect now.
-      Response.Redirect(FormsAuthentication.GetRedirectUrl(txtUsername.Text, false));
+            //You can redirect now.
+            Response.Redirect(FormsAuthentication.GetRedirectUrl(txtUsername.Text, false));
+        }
+        else
+        {
+            errorLabel.Text = "Authentication did not succeed. Check user name and password.";
+        }
     }
-    else
+    catch (Exception ex)
     {
-      errorLabel.Text = "Authentication did not succeed. Check user name and password.";
+        errorLabel.Text = "Error authenticating. " + ex.Message;
     }
-  }
-  catch(Exception ex)
-  {
-    errorLabel.Text = "Error authenticating. " + ex.Message;
-  }
 }
 </script>

@@ -104,6 +104,8 @@ namespace MDA
                 CustomerInfo.Add("CustomerName", rdr["Name"].ToString());
                 CustomerInfo.Add("SiteType", rdr["SiteType"].ToString());
                 CustomerInfo.Add("SubscriberCode", rdr["SubscriberCode"].ToString());
+                CustomerInfo.Add("EGRESSIPPrimary", rdr["EGRESSIPPrimary"].ToString());
+                CustomerInfo.Add("EGRESSIPSecondary", rdr["EGRESSIPSecondary"].ToString());
             }
 
             sqlConnection1.Close();

@@ -7,86 +7,58 @@
 </head>
   <body>
     <form id="Form1" method="post" runat="server" enctype="multipart/form-data">
-      <div class="indexTopper">
-			<div class="title"></div>
-                <asp:Label ID="loginName" Text="" runat="server"></asp:Label>
-                <asp:Button ID="LogOut" class="logout" OnClick="LogOut_Click" runat="server" />
-				<button type="button" class="profile" id="Button1" onclick="location.href='profilePage.html'"></button>
-				<button type="button" class="updateButtonSelected" id="button0"></button>
-			</div>
-		<div class="contentLeft">
-			<div id="customerSite">
-                <asp:Label ID="lblName" Runat=server />
-                <asp:Label ID="lblAuthType" Runat=server />
-                <div id="pcr"></div>
-                <asp:TextBox runat="server" id="pcrinput" Enabled="false" />
-			</div>
-            <asp:Table ID="Table1" Runat=server BorderWidth="0" CellSpacing="5" GridLines="None">
-                <asp:TableRow>
-                    <asp:TableCell>
-                       <div id="hotelDropDown"></div>
-                    </asp:TableCell>
-                    <asp:TableCell>
-                          <%--<div id="subnet"></div>--%>  
-                    </asp:TableCell>
-                </asp:TableRow>
-                <asp:TableRow>
-                    <asp:TableCell>
-                        <asp:DropDownList ID="ddlCustomers" runat="server" AutoPostBack="true" EnableViewState="true" onselectedindexchanged="ddlCustomers_SelectedIndexChanged">
-                        </asp:DropDownList>
-                    </asp:TableCell>
-                    <asp:TableCell>
-                        <%--<asp:DropDownList ID="ddlRedirects" runat="server" AutoPostBack="true" EnableViewState="true" onselectedindexchanged="ddlRedirects_SelectedIndexChanged" Enabled="false">
-                        </asp:DropDownList>--%>
-                    </asp:TableCell>
-                </asp:TableRow>
-                <asp:TableRow>
-                    <asp:TableCell ColumnSpan="2">
-                        <asp:Label ID="StatusLabel" runat="server" text="Upload Status: " Font-Name="Arial" Font-Size="10"></asp:Label>
-                    </asp:TableCell>
-                </asp:TableRow>
-                 <asp:TableRow>
-                    <asp:TableCell ColumnSpan="2">
-                        <object id="MultiFileUploader" data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="500" height="50">
-                            <param name="source" value="ClientBin/mpost.SilverlightSingleFileUpload.xap" />
-                            <param name="onerror" value="onSilverlightError" />
-                            <param name="initParams" value="MaxFileSizeKB=,FileFilter=,ChunkSize=4194304,CustomParams=yourparameters,DefaultColor=White" />
-                            <param name="background" value="white" />
-                            <param name="onload" value="pluginLoaded" />
-                            <param name="minRuntimeVersion" value="5.0.61118.0" />
-                            <param name="autoUpgrade" value="true" />
-                            <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration: none">
-                            <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight"
-                            style="border-style: none" />
-                            </a>
-                        </object>
-                        <iframe style='visibility: hidden; height: 0; width: 0; border: 0px'></iframe> 
-                    </asp:TableCell>
-                </asp:TableRow>
-            </asp:Table>
-			<asp:Button id="uploadButton" runat="server" Enabled="false" onclick="uploadButton_Click" /><p></p>
-				<div class="uploadDetails">
-					<div id="uploadedFileDetails"></div>
-					<div id="name"></div><p></p>
-						<asp:TextBox runat="server" id="inputedName" Enabled="false" style="width:312px; height:20px; margin-top:-10px; margin-left:15px;" /><p></p>
-					<div id="date"></div><p></p>
-						<asp:TextBox runat="server" id="inputedDate" Enabled="false" style=" width:312px; height:20px; margin-top:-10:px; margin-left:15px;" /><p></p>
-					<div id="versionNumber"></div><p></p>
-						<asp:TextBox runat="server" id="inputedVersion" Enabled="false" style="width:312px; height:20; margin-left:15px;" />
-					<div id="comments" style="float:right; margin-top:-159px; margin-right:92px;"></div><p></p>
-						<asp:TextBox runat="server" Enabled="false" TextMode="multiline" id="inputedComments" Columns="40" Rows="10" style="float:right; margin-top:-167px; margin-right:5px;" />
-				</div>
-		</div>
-		<div class="contentRight">
-			<div id="information">
-                <div id="currentVersion"></div>
-                <asp:TextBox id="versionInput" runat="server" Enabled="false"></asp:TextBox>
-                <div id="updatedByWho"></div>
-                <asp:TextBox id="updatedByWhoInput" runat="server" Enabled="false"></asp:TextBox>
-                <div id="dateUpdated"></div>
-                <asp:TextBox id="dateUpdatedInput" runat="server" Enabled="false"></asp:TextBox>
-			</div>
-		</div>
-        </form>
+    <div class="indexTopper">
+        <div class="title"></div>
+        <asp:Label ID="loginName" Text="" runat="server"></asp:Label>
+        <asp:Button ID="LogOut" class="logout" OnClick="LogOut_Click" runat="server" />
+        <%--<button type="button" class="profile" id="Button1" onclick="location.href='profilePage.html'"></button>--%>
+        <button type="button" class="profile" id="profile" ></button>
+    </div>
+    <div class="contentLeft" style="z-index:1">
+        <asp:Label ID="lblName" Runat=server />
+        <asp:Label ID="lblAuthType" Runat=server />
+        <div id="customerSite"></div>
+        <asp:DropDownList id="ddlCustomers" style="margin-top:5px" runat="server" AutoPostBack="true" EnableViewState="true" onselectedindexchanged="ddlCustomers_SelectedIndexChanged">
+        </asp:DropDownList>
+        <div id="pcr" style="top:200px"></div>
+        <asp:TextBox id="pcrinput" style="margin-top:5px" runat="server" Enabled="false" />
+        <object id="MultiFileUploader" data="data:application/x-silverlight-2," type="application/x-silverlight-2" style="margin-top:30px; margin-left:15px;" width="500" height="65">
+            <param name="source" value="ClientBin/mpost.SilverlightSingleFileUpload.xap" />
+            <param name="onerror" value="onSilverlightError" />
+            <param name="initParams" value="MaxFileSizeKB=,FileFilter=,ChunkSize=4194304,CustomParams=yourparameters,DefaultColor=White" />
+            <param name="background" value="white" />
+            <param name="onload" value="pluginLoaded" />
+            <param name="minRuntimeVersion" value="5.0.61118.0" />
+            <param name="autoUpgrade" value="true" />
+            <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration: none">
+            <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight"
+            style="border-style: none" />
+            </a>
+        </object>
+        <iframe style='visibility: hidden; height: 0; width: 0; border: 0px'></iframe> 
+        <div class="uploadDetails" style="z-index:1">
+            <div id="uploadedFileDetails"></div>
+            <div id="name"></div>
+            <asp:TextBox runat="server" id="inputedName" Enabled="false" style="width:312px; height:20px; margin-top:5px; margin-left:15px;" /><p></p>
+            <div id="date"></div>
+            <asp:TextBox runat="server" id="inputedDate" Enabled="false" style=" width:312px; height:20px; margin-top:15px; margin-left:15px;" /><p></p>
+            <div id="versionNumber"></div>
+            <asp:TextBox runat="server" id="inputedVersion" Enabled="false" style="width:312px; height:20px; margin-left:15px; margin-top:15px" />
+            <div id="comments" style="float:right"></div>
+            <asp:TextBox runat="server" style="float:right" Enabled="false" TextMode="multiline" id="inputedComments" Columns="40" Rows="10"/>
+            <div></div>
+            <asp:Button id="uploadButton" runat="server" Enabled="false" onclick="uploadButton_Click" />
+        </div>
+    </div>
+    <div class="contentRight" style="z-index:2;float:right">
+	    <div id="information"></div>
+        <div id="currentVersion"></div>
+        <asp:TextBox id="versionInput" runat="server" Enabled="false"></asp:TextBox>
+        <div id="updatedByWho"></div>
+        <asp:TextBox id="updatedByWhoInput" runat="server" Enabled="false"></asp:TextBox>
+        <div id="dateUpdated"></div>
+        <asp:TextBox id="dateUpdatedInput" runat="server" Enabled="false"></asp:TextBox>
+	</div>
+    </form>
   </body>
 </html>
